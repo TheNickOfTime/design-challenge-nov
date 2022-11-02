@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://xvy6h8umyuda"]
+
+[ext_resource type="Script" path="res://Scripts/Planet.gd" id="1_1rh8x"]
+[ext_resource type="Texture2D" uid="uid://v4myw5wefvky" path="res://Sprites/circle.png" id="2_kwd03"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lpgun"]
+radius = 2596.49
+
+[node name="Planet" type="Area2D"]
+visible = false
+scale = Vector2(0.111328, 0.111328)
+script = ExtResource("1_1rh8x")
+gravity_strength = 1.0
+
+[node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(1, 1)
+texture = ExtResource("2_kwd03")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(1, 1)
+shape = SubResource("CircleShape2D_lpgun")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
