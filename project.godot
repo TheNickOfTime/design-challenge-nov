@@ -11,6 +11,6 @@ config_version=5
 [application]
 
 config/name="design-challenge-nov"
-run/main_scene="res://Scenes/planet_test.tscn"
+run/main_scene="res://Scenes/puzzle_box_test.tscn"
 config/features=PackedStringArray("4.0", "Forward Plus")
 config/icon="res://icon.svg"
