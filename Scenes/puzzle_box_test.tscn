@@ -10,10 +10,9 @@ ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
 sky_material = SubResource("ProceduralSkyMaterial_pxw3g")
 
 [sub_resource type="Environment" id="Environment_iay8a"]
-background_mode = 2
+background_mode = 1
 sky = SubResource("Sky_p6hvu")
 tonemap_mode = 2
-glow_enabled = true
 
 [sub_resource type="BoxMesh" id="BoxMesh_jq54r"]
 
@@ -26,12 +25,16 @@ environment = SubResource("Environment_iay8a")
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
 shadow_enabled = true
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-0.707107, -0.298836, 0.640856, 0, 0.906308, 0.422618, -0.707107, 0.298836, -0.640856, 5.119, 3.3, -5.119)
+[node name="PuzzleBox" type="MeshInstance3D" parent="." node_paths=PackedStringArray("camera", "marker")]
+mesh = SubResource("BoxMesh_jq54r")
+skeleton = NodePath("../CameraPivot/Camera3D")
+script = ExtResource("1_f23ct")
+camera = NodePath("../CameraPivot/Camera3D")
+marker = NodePath("")
+
+[node name="CameraPivot" type="Node3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot"]
+transform = Transform3D(-0.707107, -0.298836, 0.640857, 0, 0.906308, 0.422618, -0.707107, 0.298836, -0.640857, 5.119, 3.3, -5.119)
 fov = 15.0
 size = 3.0
-
-[node name="PuzzleBox" type="MeshInstance3D" parent="."]
-mesh = SubResource("BoxMesh_jq54r")
-skeleton = NodePath("../Camera3D")
-script = ExtResource("1_f23ct")
