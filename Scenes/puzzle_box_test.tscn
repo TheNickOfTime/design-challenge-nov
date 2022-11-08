@@ -1,6 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://csagjjk6ddfsw"]
+[gd_scene load_steps=12 format=3 uid="uid://w8imssnhdjig"]
 
 [ext_resource type="Script" path="res://Scripts/PuzzleBox.gd" id="1_f23ct"]
+[ext_resource type="Script" path="res://Scripts/PuzzleBoxCamera.gd" id="2_3wgyy"]
+[ext_resource type="Script" path="res://Scripts/PuzzlePlayer.gd" id="2_x8804"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_pxw3g"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -11,10 +13,22 @@ sky_material = SubResource("ProceduralSkyMaterial_pxw3g")
 
 [sub_resource type="Environment" id="Environment_iay8a"]
 background_mode = 1
+background_color = Color(0.05, 0.05, 0.05, 1)
 sky = SubResource("Sky_p6hvu")
 tonemap_mode = 2
+sdfgi_enabled = true
 
-[sub_resource type="BoxMesh" id="BoxMesh_jq54r"]
+[sub_resource type="BoxMesh" id="BoxMesh_iw6lo"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_a7t2x"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_svwbw"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pnyq7"]
+metallic_specular = 0.0
+emission = Color(0.05, 0.05, 0.05, 1)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_rtfrl"]
 
 [node name="puzzle_box_test" type="Node3D"]
 
@@ -26,15 +40,72 @@ transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -
 shadow_enabled = true
 
 [node name="PuzzleBox" type="MeshInstance3D" parent="." node_paths=PackedStringArray("camera", "marker")]
-mesh = SubResource("BoxMesh_jq54r")
 skeleton = NodePath("../CameraPivot/Camera3D")
 script = ExtResource("1_f23ct")
 camera = NodePath("../CameraPivot/Camera3D")
 marker = NodePath("")
 
+[node name="Geometry" type="Node3D" parent="PuzzleBox"]
+
+[node name="Area3D" type="StaticBody3D" parent="PuzzleBox/Geometry"]
+transform = Transform3D(1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, -0.450205, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PuzzleBox/Geometry/Area3D"]
+mesh = SubResource("BoxMesh_iw6lo")
+skeleton = NodePath("../../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PuzzleBox/Geometry/Area3D"]
+shape = SubResource("BoxShape3D_a7t2x")
+
+[node name="Area3D2" type="StaticBody3D" parent="PuzzleBox/Geometry"]
+transform = Transform3D(1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0.449515, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PuzzleBox/Geometry/Area3D2"]
+mesh = SubResource("BoxMesh_iw6lo")
+skeleton = NodePath("../../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PuzzleBox/Geometry/Area3D2"]
+shape = SubResource("BoxShape3D_a7t2x")
+
+[node name="Area3D3" type="StaticBody3D" parent="PuzzleBox/Geometry"]
+transform = Transform3D(-4.37114e-08, 0.1, 0, -1, -4.37114e-09, 0, 0, 0, 1, -0.44986, -0.000344823, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PuzzleBox/Geometry/Area3D3"]
+mesh = SubResource("BoxMesh_iw6lo")
+skeleton = NodePath("../../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PuzzleBox/Geometry/Area3D3"]
+shape = SubResource("BoxShape3D_a7t2x")
+
+[node name="Area3D4" type="StaticBody3D" parent="PuzzleBox/Geometry"]
+transform = Transform3D(-4.37114e-08, 0.1, 0, -1, -4.37114e-09, 0, 0, 0, 1, 0.44986, -0.000344862, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PuzzleBox/Geometry/Area3D4"]
+mesh = SubResource("BoxMesh_iw6lo")
+skeleton = NodePath("../../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PuzzleBox/Geometry/Area3D4"]
+shape = SubResource("BoxShape3D_a7t2x")
+
+[node name="Player" type="RigidBody3D" parent="PuzzleBox"]
+lock_rotation = true
+script = ExtResource("2_x8804")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PuzzleBox/Player"]
+transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 0, 0, 0)
+mesh = SubResource("SphereMesh_svwbw")
+surface_material_override/0 = SubResource("StandardMaterial3D_pnyq7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PuzzleBox/Player"]
+transform = Transform3D(0.15, -4.02849e-05, -1.89129e-05, 4.02848e-05, 0.15, -4.58588e-07, 1.89131e-05, 4.5171e-07, 0.15, 0, 0, 0)
+shape = SubResource("SphereShape3D_rtfrl")
+
 [node name="CameraPivot" type="Node3D" parent="."]
+script = ExtResource("2_3wgyy")
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot"]
 transform = Transform3D(-0.707107, -0.298836, 0.640857, 0, 0.906308, 0.422618, -0.707107, 0.298836, -0.640857, 5.119, 3.3, -5.119)
 fov = 15.0
 size = 3.0
+
+[connection signal="rotate_event" from="PuzzleBox" to="PuzzleBox/Player" method="_on_puzzle_box_rotate_event"]
