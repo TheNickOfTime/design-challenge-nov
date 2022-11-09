@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://c0esqjhu7aanc"]
+
+[ext_resource type="Script" path="res://Scripts/PuzzlePlayer.gd" id="1_8ja8y"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_svwbw"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pnyq7"]
+metallic_specular = 0.0
+emission = Color(0.05, 0.05, 0.05, 1)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_rtfrl"]
+
+[node name="Player" type="RigidBody3D"]
+lock_rotation = true
+script = ExtResource("1_8ja8y")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 0, 0, 0)
+mesh = SubResource("SphereMesh_svwbw")
+surface_material_override/0 = SubResource("StandardMaterial3D_pnyq7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.15, -4.02849e-05, -1.89129e-05, 4.02848e-05, 0.15, -4.58588e-07, 1.89131e-05, 4.5171e-07, 0.15, 0, 0, 0)
+shape = SubResource("SphereShape3D_rtfrl")
