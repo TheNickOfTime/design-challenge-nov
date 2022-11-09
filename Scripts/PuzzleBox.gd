@@ -1,4 +1,4 @@
-extends MeshInstance3D
+extends Area3D
 
 #Signals------------------------------------------------------------------------
 signal rotate_event(is_rotating : bool)
@@ -15,13 +15,14 @@ var rotate_time : float = 0.75
 var is_rotating : bool = false
 var continue_rotating : bool = false
 var next_rot : Transform3D
+var current_direction : Vector3
+var last_direction : Vector3
 
 
 func _ready():
 	var players = get_tree().get_nodes_in_group("Player")
 	for player in players:
 		pass
-
 
 
 func _process(delta):
@@ -34,20 +35,22 @@ func _input(event):
 		
 		var new_rot : Transform3D
 
+		last_direction = current_direction
+
 		if event.is_action_pressed("rotate_cube_up"):
-			new_rot = transform.rotated(Vector3.RIGHT, rotate_degrees)
+			current_direction = Vector3.RIGHT
 		elif event.is_action_pressed("rotate_cube_down"):
-			new_rot = transform.rotated(Vector3.RIGHT, -rotate_degrees)
+			current_direction = Vector3.LEFT
 		elif event.is_action_pressed("rotate_cube_left"):
-			new_rot = transform.rotated(Vector3.FORWARD, rotate_degrees)
+			current_direction = Vector3.FORWARD
 		elif event.is_action_pressed("rotate_cube_right"):
-			new_rot = transform.rotated(Vector3.FORWARD, -rotate_degrees)
+			current_direction = Vector3.BACK
 		
-		if is_rotating:
+		if is_rotating && current_direction == last_direction:
 			continue_rotating = true
-
+		
+		new_rot = transform.rotated(current_direction, rotate_degrees)
 		rotate_cube(new_rot)
-
 
 
 func rotate_cube(new_rotation : Transform3D):
@@ -63,14 +66,12 @@ func rotate_cube(new_rotation : Transform3D):
 	if continue_rotating:
 		continue_rotating = false
 		is_rotating = false
-		rotate_cube(transform.rotated(Vector3.FORWARD, -rotate_degrees))
+		rotate_cube(get_new_rotation(last_direction))
 		return
 
 	is_rotating = false
 	emit_signal("rotate_event", false)
 
 
-# func rotate_direction():
-# 	var new_rot : Transform3D
-# 	var cube_dir : Vector3 = transform.basis.z
-# 	var camera_dir : Vector3 = Vector3(camera.basis.z.x, 0, camera.basis.z.z)
+func get_new_rotation(direction : Vector3) -> Transform3D:
+	return transform.rotated(direction, rotate_degrees)
