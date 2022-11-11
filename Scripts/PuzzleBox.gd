@@ -20,6 +20,8 @@ var last_direction : Vector3
 
 
 func _ready():
+	print(position.distance_to(camera.position))
+
 	var players = get_tree().get_nodes_in_group("Player")
 	for player in players:
 		pass
@@ -48,7 +50,7 @@ func _input(event):
 		
 		if is_rotating && current_direction == last_direction:
 			continue_rotating = true
-		
+
 		new_rot = transform.rotated(current_direction, rotate_degrees)
 		rotate_cube(new_rot)
 
@@ -75,3 +77,20 @@ func rotate_cube(new_rotation : Transform3D):
 
 func get_new_rotation(direction : Vector3) -> Transform3D:
 	return transform.rotated(direction, rotate_degrees)
+
+
+func orient_rotation(original_direction : Vector3):
+	var camera_basis : Vector3 = camera.global_transform.basis.z
+	var camera_forward : Vector3 = Vector3(camera_basis.x, 0, camera_basis.z).normalized()
+	var something : bool = abs(camera_forward.x) >= abs(camera_forward.z)
+
+	return original_direction if something else Vector3(original_direction.z, 0, original_direction.x)
+
+
+func _on_body_shape_exited(body_rid, body, body_shape_index, local_shape_index):
+	if is_ancestor_of(body):
+		var last_position = body.global_position
+
+		remove_child(body)
+		body.position = last_position
+		get_parent().add_child(body)

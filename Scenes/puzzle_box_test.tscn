@@ -86,9 +86,12 @@ shape = SubResource("BoxShape3D_a7t2x")
 [node name="Player" parent="PuzzleBox" instance=ExtResource("2_201jb")]
 
 [node name="CameraPivot" type="Node3D" parent="."]
+transform = Transform3D(-0.707107, -0.241845, 0.664463, 0, 0.939693, 0.34202, -0.707107, 0.241845, -0.664463, 0, 0, 0)
 script = ExtResource("2_3wgyy")
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot"]
-transform = Transform3D(-0.707107, -0.298836, 0.640857, 0, 0.906308, 0.422618, -0.707107, 0.298836, -0.640857, 5.119, 3.3, -5.119)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 8)
 fov = 15.0
 size = 3.0
+
+[connection signal="body_shape_exited" from="PuzzleBox" to="PuzzleBox" method="_on_body_shape_exited"]
