@@ -5,7 +5,7 @@ var mouse_delta : Vector2
 var pan_speed : float = 0.25
 var pan_direction : int = -1
 var is_panning : bool = false
-var max_angle : float = 45
+var max_angle : float = 30
 
 
 func _ready():
@@ -32,4 +32,4 @@ func _input(event):
 func pan_cube(delta : float):
 	rotate_y(mouse_delta.x * pan_direction * pan_speed * delta)
 	rotate_object_local(Vector3.RIGHT, mouse_delta.y * pan_direction * pan_speed * delta)
-	rotation.x = clamp(rotation.x, deg_to_rad(-max_angle), deg_to_rad(0))
+	rotation.x = clamp(rotation.x, deg_to_rad(-max_angle), deg_to_rad(max_angle))
