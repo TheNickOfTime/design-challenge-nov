@@ -20,8 +20,6 @@ var last_direction : Vector3
 
 
 func _ready():
-	print(position.distance_to(camera.position))
-
 	var players = get_tree().get_nodes_in_group("Player")
 	for player in players:
 		pass
@@ -51,7 +49,7 @@ func _input(event):
 		if is_rotating && current_direction == last_direction:
 			continue_rotating = true
 
-		new_rot = transform.rotated(current_direction, rotate_degrees)
+		new_rot = get_new_rotation(orient_rotation(current_direction))
 		rotate_cube(new_rot)
 
 
@@ -82,9 +80,26 @@ func get_new_rotation(direction : Vector3) -> Transform3D:
 func orient_rotation(original_direction : Vector3):
 	var camera_basis : Vector3 = camera.global_transform.basis.z
 	var camera_forward : Vector3 = Vector3(camera_basis.x, 0, camera_basis.z).normalized()
-	var something : bool = abs(camera_forward.x) >= abs(camera_forward.z)
+	var invert_vector : bool = abs(camera_forward.x) >= abs(camera_forward.z)
+	var snapped_camera : Vector3 = Vector3(camera_forward.x, 0, 0).normalized() if invert_vector else Vector3(0, 0, camera_forward.z).normalized()
+	var flipped_direction : Vector3 = Vector3(original_direction.z, 0, original_direction.x)
+	var oriented_direction : Vector3 = flipped_direction if invert_vector else original_direction
 
-	return original_direction if something else Vector3(original_direction.z, 0, original_direction.x)
+	match snapped_camera:
+		Vector3.FORWARD:
+			# print("forward")
+			pass
+		Vector3.LEFT:
+			# print("left")
+			oriented_direction.z *= -1
+		Vector3.BACK:
+			# print("back")
+			oriented_direction *= -1
+		Vector3.RIGHT:
+			# print("right")
+			oriented_direction.x *= -1
+
+	return oriented_direction
 
 
 func _on_body_shape_exited(body_rid, body, body_shape_index, local_shape_index):
