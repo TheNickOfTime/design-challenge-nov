@@ -1,0 +1,6 @@
+[gd_resource type="PanoramaSkyMaterial" load_steps=2 format=3 uid="uid://d26unq8uckvjy"]
+
+[ext_resource type="Texture2D" uid="uid://c5w07i0fweov8" path="res://Textures/stars.jpg" id="1_cm3pe"]
+
+[resource]
+panorama = ExtResource("1_cm3pe")
