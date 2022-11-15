@@ -66,7 +66,7 @@ func rotate_cube(new_rotation : Transform3D):
 	if continue_rotating:
 		continue_rotating = false
 		is_rotating = false
-		rotate_cube(get_new_rotation(last_direction))
+		rotate_cube(get_new_rotation(orient_rotation(current_direction)))
 		return
 
 	is_rotating = false
