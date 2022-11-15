@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://w8imssnhdjig"]
+[gd_scene load_steps=11 format=3 uid="uid://w8imssnhdjig"]
 
 [ext_resource type="Material" uid="uid://d26unq8uckvjy" path="res://Shaders/space_skybox.tres" id="1_8s33p"]
 [ext_resource type="Script" path="res://Scripts/PuzzleBox.gd" id="1_f23ct"]
 [ext_resource type="Script" path="res://Scripts/PuzzleBoxCamera.gd" id="2_3wgyy"]
 [ext_resource type="PackedScene" uid="uid://c0esqjhu7aanc" path="res://Scenes/puzzle_box_player.tscn" id="2_201jb"]
 [ext_resource type="ArrayMesh" uid="uid://dg6q6wowk2sod" path="res://Geometry/cube_test.obj" id="3_6wrra"]
+[ext_resource type="PackedScene" uid="uid://bonou2nfe7to5" path="res://Prefabs/goal.tscn" id="5_upn66"]
 
 [sub_resource type="Sky" id="Sky_lihpv"]
 sky_material = ExtResource("1_8s33p")
@@ -57,6 +58,8 @@ shape = SubResource("ConcavePolygonShape3D_1gp36")
 [node name="Player" parent="PuzzleBox" instance=ExtResource("2_201jb")]
 continuous_cd = true
 freeze = true
+
+[node name="Goal" parent="PuzzleBox" instance=ExtResource("5_upn66")]
 
 [node name="CameraPivot" type="Node3D" parent="."]
 transform = Transform3D(-0.707107, -0.241845, 0.664463, 0, 0.939693, 0.34202, -0.707107, 0.241845, -0.664463, 0, 0, 0)
