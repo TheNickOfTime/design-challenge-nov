@@ -11,7 +11,7 @@ emission = Color(0.7, 0.7, 0.7, 1)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_rtfrl"]
 
-[node name="Player" type="RigidBody3D"]
+[node name="Player" type="RigidBody3D" groups=["Player"]]
 lock_rotation = true
 script = ExtResource("1_8ja8y")
 

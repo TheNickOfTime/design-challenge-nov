@@ -102,6 +102,10 @@ func orient_rotation(original_direction : Vector3):
 	return oriented_direction
 
 
+func puzzle_complete():
+	print("puzzle")
+
+
 func _on_body_shape_exited(body_rid, body, body_shape_index, local_shape_index):
 	if is_ancestor_of(body):
 		var last_position = body.global_position
@@ -109,3 +113,7 @@ func _on_body_shape_exited(body_rid, body, body_shape_index, local_shape_index):
 		remove_child(body)
 		body.position = last_position
 		get_parent().add_child(body)
+
+
+func _on_goal_puzzle_complete():
+	puzzle_complete()

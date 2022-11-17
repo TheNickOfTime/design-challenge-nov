@@ -1,4 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://bonou2nfe7to5"]
+[gd_scene load_steps=5 format=3 uid="uid://bonou2nfe7to5"]
+
+[ext_resource type="Script" path="res://Scripts/Goal.gd" id="1_oo33w"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_3j8xg"]
 size = Vector3(0.1, 0.1, 0.1)
@@ -14,11 +16,13 @@ emission = Color(0.7, 0, 0, 1)
 size = Vector3(0.1, 0.1, 0.1)
 
 [node name="Goal" type="Area3D"]
+script = ExtResource("1_oo33w")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0.1, -0.4)
 mesh = SubResource("BoxMesh_3j8xg")
 surface_material_override/0 = SubResource("StandardMaterial3D_yvsci")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_jffkm")
+
+[connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]

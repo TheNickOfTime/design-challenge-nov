@@ -60,6 +60,7 @@ continuous_cd = true
 freeze = true
 
 [node name="Goal" parent="PuzzleBox" instance=ExtResource("5_upn66")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0.1, -0.4)
 
 [node name="CameraPivot" type="Node3D" parent="."]
 transform = Transform3D(-0.707107, -0.241845, 0.664463, 0, 0.939693, 0.34202, -0.707107, 0.241845, -0.664463, 0, 0, 0)
@@ -72,3 +73,4 @@ size = 3.0
 
 [connection signal="body_shape_exited" from="PuzzleBox" to="PuzzleBox" method="_on_body_shape_exited"]
 [connection signal="rotate_event" from="PuzzleBox" to="PuzzleBox/Player" method="_on_puzzle_box_rotate_event"]
+[connection signal="puzzle_complete" from="PuzzleBox/Goal" to="PuzzleBox" method="_on_goal_puzzle_complete"]
