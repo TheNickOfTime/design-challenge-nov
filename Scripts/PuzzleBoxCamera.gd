@@ -26,7 +26,6 @@ func _input(event):
 	
 	if event is InputEventMouseMotion:
 		mouse_delta = event.relative
-		
 
 
 func pan_cube(delta : float):
