@@ -7,6 +7,8 @@ var pan_direction : int = -1
 var is_panning : bool = false
 var max_angle : float = 30
 
+var has_input_occurred : bool = false
+
 
 func _ready():
 	pass
@@ -16,6 +18,9 @@ func _process(delta):
 	if(is_panning):
 		pan_cube(delta)
 	
+	if !has_input_occurred:
+		rotate_y(1 * pan_speed * delta)
+	
 	mouse_delta = Vector2.ZERO
 
 
@@ -23,6 +28,7 @@ func _input(event):
 	if event is InputEventMouseButton:
 		var mouse_button = event as InputEventMouseButton
 		is_panning = mouse_button.is_pressed()
+		has_input_occurred = true
 	
 	if event is InputEventMouseMotion:
 		mouse_delta = event.relative

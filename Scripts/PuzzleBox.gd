@@ -1,14 +1,16 @@
-extends Area3D
+extends Node3D
 
 #Signals------------------------------------------------------------------------
 signal rotate_event(is_rotating : bool)
 
 #Export variables---------------------------------------------------------------
-@export var camera : Camera3D
-@export var marker : Node3D
+@export var puzzles : Array[PackedScene]
 
 #OnReady variables--------------------------------------------------------------
 @onready var rotate_degrees : float = deg_to_rad(90)
+@onready var puzzle_box : Node3D = $PuzzleBox as Node3D
+@onready var camera : Camera3D = $Camera/Camera3D as Camera3D
+@onready var transition_cube : Node3D = $TransitionCube
 
 #Member Variables---------------------------------------------------------------
 var rotate_time : float = 0.75
@@ -17,9 +19,10 @@ var continue_rotating : bool = false
 var next_rot : Transform3D
 var current_direction : Vector3
 var last_direction : Vector3
-
+var current_level_index : int
 
 func _ready():
+	print(camera)
 	var players = get_tree().get_nodes_in_group("Player")
 	for player in players:
 		pass
@@ -51,6 +54,12 @@ func _input(event):
 
 		new_rot = get_new_rotation(orient_rotation(current_direction))
 		rotate_cube(new_rot)
+	
+	if event is InputEventKey:
+		if event.keycode == KEY_ENTER && event.pressed:
+			increment_level_index(true)
+			swap_puzzle(puzzles[current_level_index])
+
 
 
 func rotate_cube(new_rotation : Transform3D):
@@ -60,7 +69,7 @@ func rotate_cube(new_rotation : Transform3D):
 	
 	# Wait for rotation to happen
 	var tween = get_tree().create_tween()
-	tween.tween_property(self, "transform", new_rotation, rotate_time)
+	tween.tween_property(puzzle_box, "transform", new_rotation, rotate_time)
 	await tween.finished
 
 	if continue_rotating:
@@ -74,7 +83,7 @@ func rotate_cube(new_rotation : Transform3D):
 
 
 func get_new_rotation(direction : Vector3) -> Transform3D:
-	return transform.rotated(direction, rotate_degrees)
+	return puzzle_box.transform.rotated(direction, rotate_degrees)
 
 
 func orient_rotation(original_direction : Vector3):
@@ -104,6 +113,38 @@ func orient_rotation(original_direction : Vector3):
 
 func puzzle_complete():
 	print("puzzle")
+
+
+func increment_level_index (is_positive : bool):
+	current_level_index += 1 if is_positive else -1
+	current_level_index = wrap(current_level_index, 0, puzzles.size())
+	print(current_level_index)
+
+
+func swap_puzzle(new_puzzle : PackedScene):
+	var old_scene = puzzle_box
+	var new_scene = new_puzzle.instantiate()
+
+	var transition_tween = get_tree().create_tween()
+	transition_tween.tween_property(transition_cube, "scale", Vector3.ONE, 0.5)
+	transition_cube.scale = Vector3.ZERO
+	transition_cube.visible = true
+	await transition_tween.finished
+
+	remove_child(old_scene)
+
+	var short_timer = get_tree().create_timer(0.25)
+	await short_timer.timeout
+
+	add_child(new_scene)
+	puzzle_box = new_scene
+
+	transition_tween = get_tree().create_tween()
+	transition_tween.tween_property(transition_cube, "scale", Vector3.ZERO, 0.5)
+
+	await transition_tween.finished
+
+	
 
 
 func _on_body_shape_exited(body_rid, body, body_shape_index, local_shape_index):
