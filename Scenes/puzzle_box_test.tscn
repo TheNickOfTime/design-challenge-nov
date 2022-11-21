@@ -1,11 +1,12 @@
-[gd_scene load_steps=11 format=3 uid="uid://w8imssnhdjig"]
+[gd_scene load_steps=17 format=3 uid="uid://eg2xvgk6wtp2"]
 
 [ext_resource type="Material" uid="uid://d26unq8uckvjy" path="res://Shaders/space_skybox.tres" id="1_8s33p"]
 [ext_resource type="Script" path="res://Scripts/PuzzleBox.gd" id="1_f23ct"]
-[ext_resource type="Script" path="res://Scripts/PuzzleBoxCamera.gd" id="2_3wgyy"]
-[ext_resource type="PackedScene" uid="uid://c0esqjhu7aanc" path="res://Scenes/puzzle_box_player.tscn" id="2_201jb"]
-[ext_resource type="ArrayMesh" uid="uid://dg6q6wowk2sod" path="res://Geometry/cube_test.obj" id="3_6wrra"]
-[ext_resource type="PackedScene" uid="uid://bonou2nfe7to5" path="res://Prefabs/goal.tscn" id="5_upn66"]
+[ext_resource type="LabelSettings" uid="uid://djp8mmrg5wn8t" path="res://UI/label_title.tres" id="2_08hyc"]
+[ext_resource type="Script" path="res://Scripts/HUD.gd" id="2_ogw50"]
+[ext_resource type="SystemFont" uid="uid://clq0ndivqebeu" path="res://UI/default_font.tres" id="3_ux0cb"]
+[ext_resource type="PackedScene" uid="uid://eeyjhjgpr0vp" path="res://Prefabs/camera.tscn" id="6_axqi4"]
+[ext_resource type="PackedScene" uid="uid://ctn60273yv70f" path="res://Scenes/Puzzles/puzzle_box_template.tscn" id="7_1s8uu"]
 
 [sub_resource type="Sky" id="Sky_lihpv"]
 sky_material = ExtResource("1_8s33p")
@@ -22,11 +23,22 @@ sdfgi_enabled = true
 sdfgi_use_occlusion = true
 fog_sky_affect = 0.0
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_xbf01"]
-size = Vector3(1.1, 1.1, 1.1)
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_n4xnl"]
 
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_1gp36"]
-data = PackedVector3Array(-0.6, 0, -0.5, -0.6, 0.1, 0.5, -0.6, 0, 0.6, -0.6, 0, -0.5, -0.6, 0.1, -0.4, -0.6, 0.1, 0.5, -0.6, 0.5, 0, -0.6, 0.6, 0.1, -0.6, 0.5, 0.1, -0.6, 0.5, 0, -0.6, 0.6, 0, -0.6, 0.6, 0.1, -0.6, 0.1, 0.5, -0.6, 1, 0.5, -0.6, 0, 0.6, -0.6, 0.9, 0, -0.6, 1, 0.1, -0.6, 0.9, 0.1, -0.6, 0.9, 0, -0.6, 1, 0, -0.6, 1, 0.1, -0.6, 0, -0.5, -0.6, 1, -0.4, -0.6, 0.1, -0.4, -0.6, 1, 0.5, -0.6, 1.1, 0.6, -0.6, 0, 0.6, -0.6, 1, -0.4, -0.6, 1.1, 0.6, -0.6, 1, 0, -0.6, 1, 0, -0.6, 1.1, 0.6, -0.6, 1, 0.1, -0.6, 1, 0.1, -0.6, 1.1, 0.6, -0.6, 1, 0.5, -0.6, 0, -0.5, -0.6, 1.1, -0.5, -0.6, 1, -0.4, -0.6, 1, -0.4, -0.6, 1.1, -0.5, -0.6, 1.1, 0.6, -0.4, 0.6, -0.4, -0.4, 0.7, -0.3, -0.4, 0.6, -0.3, -0.4, 0.6, -0.4, -0.4, 0.7, -0.4, -0.4, 0.7, -0.3, -0.2, 0, -0.1, -0.2, 0.1, 0.2, -0.2, 0, 0.2, -0.2, 0, -0.1, -0.2, 0.1, -0.1, -0.2, 0.1, 0.2, -0.2, 1, -0.1, -0.2, 1.1, 0.2, -0.2, 1, 0.2, -0.2, 1, -0.1, -0.2, 1.1, -0.1, -0.2, 1.1, 0.2, 0.1, 0.6, -0.5, 0.1, 0.7, -0.4, 0.1, 0.6, -0.4, 0.1, 0.6, -0.5, 0.1, 0.7, -0.5, 0.1, 0.7, -0.4, 0.2, 0.6, 0, 0.2, 0.7, 0.1, 0.2, 0.6, 0.1, 0.2, 0.6, 0, 0.2, 0.7, 0, 0.2, 0.7, 0.1, 0.4, 0, -0.4, 0.4, 0.1, 0.5, 0.4, 0, 0.5, 0.4, 0, -0.4, 0.4, 0.1, -0.4, 0.4, 0.1, 0.5, 0.4, 0.1, 0.5, 0.4, 1, 0.6, 0.4, 0.1, 0.6, 0.4, 0.1, 0.5, 0.4, 1, 0.5, 0.4, 1, 0.6, 0.4, 0.1, -0.5, 0.4, 1, -0.4, 0.4, 0.1, -0.4, 0.4, 0.1, -0.5, 0.4, 1, -0.5, 0.4, 1, -0.4, 0.4, 1, -0.4, 0.4, 1.1, 0.5, 0.4, 1, 0.5, 0.4, 1, -0.4, 0.4, 1.1, -0.4, 0.4, 1.1, 0.5, -0.5, 0, -0.4, -0.5, 0, 0.5, -0.5, 0.1, 0.5, -0.5, 0, -0.4, -0.5, 0.1, 0.5, -0.5, 0.1, -0.4, -0.5, 0.1, -0.5, -0.5, 0.1, -0.4, -0.5, 0.6, -0.4, -0.5, 0.1, -0.5, -0.5, 0.6, -0.4, -0.5, 0.6, -0.5, -0.5, 0.1, 0.5, -0.5, 0.1, 0.6, -0.5, 1, 0.6, -0.5, 0.1, 0.5, -0.5, 1, 0.6, -0.5, 1, 0.5, -0.5, 0.9, 0, -0.5, 0.9, 0.1, -0.5, 1, 0.1, -0.5, 0.9, 0, -0.5, 1, 0.1, -0.5, 1, 0, -0.5, 0.7, -0.5, -0.5, 0.7, -0.4, -0.5, 1, -0.4, -0.5, 0.7, -0.5, -0.5, 1, -0.4, -0.5, 1, -0.5, -0.5, 1, 0, -0.5, 1, 0.1, -0.5, 1.1, 0.5, -0.5, 1, -0.4, -0.5, 1, 0, -0.5, 1.1, 0.5, -0.5, 1, 0.1, -0.5, 1, 0.5, -0.5, 1.1, 0.5, -0.5, 1, -0.4, -0.5, 1.1, 0.5, -0.5, 1.1, -0.4, -0.4, 0.5, 0, -0.4, 0.5, 0.1, -0.4, 0.6, 0.1, -0.4, 0.5, 0, -0.4, 0.6, 0.1, -0.4, 0.6, 0, -0.3, 0.6, -0.4, -0.3, 0.6, -0.3, -0.3, 0.7, -0.3, -0.3, 0.6, -0.4, -0.3, 0.7, -0.3, -0.3, 0.7, -0.4, -0.2, 0.6, -0.5, -0.2, 0.6, -0.4, -0.2, 0.7, -0.4, -0.2, 0.6, -0.5, -0.2, 0.7, -0.4, -0.2, 0.7, -0.5, 0.1, 0, -0.1, 0.1, 0, 0.2, 0.1, 0.1, 0.2, 0.1, 0, -0.1, 0.1, 0.1, 0.2, 0.1, 0.1, -0.1, 0.1, 1, -0.1, 0.1, 1, 0.2, 0.1, 1.1, 0.2, 0.1, 1, -0.1, 0.1, 1.1, 0.2, 0.1, 1.1, -0.1, 0.2, 0.6, -0.5, 0.2, 0.6, -0.4, 0.2, 0.7, -0.4, 0.2, 0.6, -0.5, 0.2, 0.7, -0.4, 0.2, 0.7, -0.5, 0.5, 0, -0.5, 0.5, 0, 0.6, 0.5, 0.1, 0.5, 0.5, 0, -0.5, 0.5, 0.1, 0.5, 0.5, 0.1, -0.4, 0.5, 0.6, 0, 0.5, 0.6, 0.1, 0.5, 0.7, 0.1, 0.5, 0.6, 0, 0.5, 0.7, 0.1, 0.5, 0.7, 0, 0.5, 0.1, 0.5, 0.5, 0, 0.6, 0.5, 1, 0.5, 0.5, 0, -0.5, 0.5, 0.1, -0.4, 0.5, 1, -0.4, 0.5, 1, 0.5, 0.5, 0, 0.6, 0.5, 1.1, 0.6, 0.5, 1, -0.4, 0.5, 1, 0.5, 0.5, 1.1, 0.6, 0.5, 0, -0.5, 0.5, 1, -0.4, 0.5, 1.1, -0.5, 0.5, 1, -0.4, 0.5, 1.1, 0.6, 0.5, 1.1, -0.5, -0.6, 1.1, 0.6, -0.5, 0.1, 0.6, -0.6, 0, 0.6, -0.6, 1.1, 0.6, -0.5, 1, 0.6, -0.5, 0.1, 0.6, -0.5, 0.1, 0.6, 0.4, 0.1, 0.6, -0.6, 0, 0.6, -0.6, 1.1, 0.6, 0.4, 1, 0.6, -0.5, 1, 0.6, 0.4, 0.1, 0.6, 0.5, 0, 0.6, -0.6, 0, 0.6, 0.4, 1, 0.6, 0.5, 0, 0.6, 0.4, 0.1, 0.6, -0.6, 1.1, 0.6, 0.5, 1.1, 0.6, 0.4, 1, 0.6, 0.4, 1, 0.6, 0.5, 1.1, 0.6, 0.5, 0, 0.6, -0.2, 0.1, 0.2, 0.1, 0, 0.2, -0.2, 0, 0.2, -0.2, 0.1, 0.2, 0.1, 0.1, 0.2, 0.1, 0, 0.2, -0.2, 1.1, 0.2, 0.1, 1, 0.2, -0.2, 1, 0.2, -0.2, 1.1, 0.2, 0.1, 1.1, 0.2, 0.1, 1, 0.2, -0.6, 1, 0.1, -0.5, 0.9, 0.1, -0.6, 0.9, 0.1, -0.6, 1, 0.1, -0.5, 1, 0.1, -0.5, 0.9, 0.1, -0.6, 0.6, 0.1, -0.4, 0.5, 0.1, -0.6, 0.5, 0.1, -0.6, 0.6, 0.1, -0.4, 0.6, 0.1, -0.4, 0.5, 0.1, 0.2, 0.7, 0.1, 0.5, 0.6, 0.1, 0.2, 0.6, 0.1, 0.2, 0.7, 0.1, 0.5, 0.7, 0.1, 0.5, 0.6, 0.1, -0.4, 0.7, -0.3, -0.3, 0.6, -0.3, -0.4, 0.6, -0.3, -0.4, 0.7, -0.3, -0.3, 0.7, -0.3, -0.3, 0.6, -0.3, -0.6, 1, -0.4, -0.5, 0.1, -0.4, -0.6, 0.1, -0.4, -0.6, 1, -0.4, -0.5, 0.6, -0.4, -0.5, 0.1, -0.4, -0.6, 1, -0.4, -0.5, 0.7, -0.4, -0.5, 0.6, -0.4, -0.6, 1, -0.4, -0.5, 1, -0.4, -0.5, 0.7, -0.4, -0.5, 0.7, -0.4, -0.4, 0.6, -0.4, -0.5, 0.6, -0.4, -0.5, 0.7, -0.4, -0.4, 0.7, -0.4, -0.4, 0.6, -0.4, -0.3, 0.7, -0.4, -0.2, 0.6, -0.4, -0.3, 0.6, -0.4, -0.3, 0.7, -0.4, -0.2, 0.7, -0.4, -0.2, 0.6, -0.4, 0.1, 0.7, -0.4, 0.2, 0.6, -0.4, 0.1, 0.6, -0.4, 0.1, 0.7, -0.4, 0.2, 0.7, -0.4, 0.2, 0.6, -0.4, -0.5, 0.1, -0.4, 0.4, 0, -0.4, -0.5, 0, -0.4, -0.5, 0.1, -0.4, 0.4, 0.1, -0.4, 0.4, 0, -0.4, -0.5, 1.1, -0.4, 0.4, 1, -0.4, -0.5, 1, -0.4, -0.5, 1.1, -0.4, 0.4, 1.1, -0.4, 0.4, 1, -0.4, 0.4, 1, -0.4, 0.5, 0.1, -0.4, 0.4, 0.1, -0.4, 0.4, 1, -0.4, 0.5, 1, -0.4, 0.5, 0.1, -0.4, -0.6, 1, 0.5, -0.6, 0.1, 0.5, -0.5, 0.1, 0.5, -0.6, 1, 0.5, -0.5, 0.1, 0.5, -0.5, 1, 0.5, -0.5, 0.1, 0.5, -0.5, 0, 0.5, 0.4, 0, 0.5, -0.5, 0.1, 0.5, 0.4, 0, 0.5, 0.4, 0.1, 0.5, -0.5, 1.1, 0.5, -0.5, 1, 0.5, 0.4, 1, 0.5, -0.5, 1.1, 0.5, 0.4, 1, 0.5, 0.4, 1.1, 0.5, 0.4, 1, 0.5, 0.4, 0.1, 0.5, 0.5, 0.1, 0.5, 0.4, 1, 0.5, 0.5, 0.1, 0.5, 0.5, 1, 0.5, -0.6, 1, 0, -0.6, 0.9, 0, -0.5, 0.9, 0, -0.6, 1, 0, -0.5, 0.9, 0, -0.5, 1, 0, -0.6, 0.6, 0, -0.6, 0.5, 0, -0.4, 0.5, 0, -0.6, 0.6, 0, -0.4, 0.5, 0, -0.4, 0.6, 0, 0.2, 0.7, 0, 0.2, 0.6, 0, 0.5, 0.6, 0, 0.2, 0.7, 0, 0.5, 0.6, 0, 0.5, 0.7, 0, -0.2, 0.1, -0.1, -0.2, 0, -0.1, 0.1, 0, -0.1, -0.2, 0.1, -0.1, 0.1, 0, -0.1, 0.1, 0.1, -0.1, -0.2, 1.1, -0.1, -0.2, 1, -0.1, 0.1, 1, -0.1, -0.2, 1.1, -0.1, 0.1, 1, -0.1, 0.1, 1.1, -0.1, -0.6, 1.1, -0.5, -0.6, 0, -0.5, -0.5, 0.1, -0.5, -0.6, 1.1, -0.5, -0.5, 0.1, -0.5, -0.5, 0.6, -0.5, -0.6, 1.1, -0.5, -0.5, 0.6, -0.5, -0.5, 0.7, -0.5, -0.6, 1.1, -0.5, -0.5, 0.7, -0.5, -0.5, 1, -0.5, -0.5, 0.7, -0.5, -0.5, 0.6, -0.5, -0.2, 0.6, -0.5, -0.5, 0.7, -0.5, -0.2, 0.6, -0.5, -0.2, 0.7, -0.5, 0.1, 0.7, -0.5, 0.1, 0.6, -0.5, 0.2, 0.6, -0.5, 0.1, 0.7, -0.5, 0.2, 0.6, -0.5, 0.2, 0.7, -0.5, -0.5, 0.1, -0.5, -0.6, 0, -0.5, 0.4, 0.1, -0.5, -0.6, 1.1, -0.5, -0.5, 1, -0.5, 0.4, 1, -0.5, 0.4, 0.1, -0.5, -0.6, 0, -0.5, 0.5, 0, -0.5, 0.4, 1, -0.5, 0.4, 0.1, -0.5, 0.5, 0, -0.5, -0.6, 1.1, -0.5, 0.4, 1, -0.5, 0.5, 1.1, -0.5, 0.4, 1, -0.5, 0.5, 0, -0.5, 0.5, 1.1, -0.5, 0.5, 0, 0.6, -0.5, 0, 0.5, -0.6, 0, 0.6, 0.5, 0, 0.6, 0.4, 0, 0.5, -0.5, 0, 0.5, 0.1, 0, 0.2, -0.2, 0, -0.1, -0.2, 0, 0.2, 0.1, 0, 0.2, 0.1, 0, -0.1, -0.2, 0, -0.1, -0.5, 0, 0.5, -0.5, 0, -0.4, -0.6, 0, 0.6, 0.5, 0, 0.6, 0.4, 0, -0.4, 0.4, 0, 0.5, -0.5, 0, -0.4, -0.6, 0, -0.5, -0.6, 0, 0.6, 0.4, 0, -0.4, -0.6, 0, -0.5, -0.5, 0, -0.4, 0.5, 0, 0.6, 0.5, 0, -0.5, 0.4, 0, -0.4, 0.4, 0, -0.4, 0.5, 0, -0.5, -0.6, 0, -0.5, -0.4, 0.5, 0.1, -0.6, 0.5, 0, -0.6, 0.5, 0.1, -0.4, 0.5, 0.1, -0.4, 0.5, 0, -0.6, 0.5, 0, 0.5, 0.6, 0.1, 0.2, 0.6, 0, 0.2, 0.6, 0.1, 0.5, 0.6, 0.1, 0.5, 0.6, 0, 0.2, 0.6, 0, -0.3, 0.6, -0.3, -0.4, 0.6, -0.4, -0.4, 0.6, -0.3, -0.3, 0.6, -0.3, -0.3, 0.6, -0.4, -0.4, 0.6, -0.4, -0.4, 0.6, -0.4, -0.5, 0.6, -0.5, -0.5, 0.6, -0.4, -0.3, 0.6, -0.4, -0.5, 0.6, -0.5, -0.4, 0.6, -0.4, -0.2, 0.6, -0.4, -0.5, 0.6, -0.5, -0.3, 0.6, -0.4, -0.2, 0.6, -0.4, -0.2, 0.6, -0.5, -0.5, 0.6, -0.5, 0.2, 0.6, -0.4, 0.1, 0.6, -0.5, 0.1, 0.6, -0.4, 0.2, 0.6, -0.4, 0.2, 0.6, -0.5, 0.1, 0.6, -0.5, -0.5, 0.9, 0.1, -0.6, 0.9, 0, -0.6, 0.9, 0.1, -0.5, 0.9, 0.1, -0.5, 0.9, 0, -0.6, 0.9, 0, 0.4, 1, 0.6, -0.5, 1, 0.5, -0.5, 1, 0.6, 0.4, 1, 0.6, 0.4, 1, 0.5, -0.5, 1, 0.5, -0.5, 1, 0.5, -0.6, 1, 0.1, -0.6, 1, 0.5, -0.5, 1, 0.5, -0.5, 1, 0.1, -0.6, 1, 0.1, 0.1, 1, 0.2, -0.2, 1, -0.1, -0.2, 1, 0.2, 0.1, 1, 0.2, 0.1, 1, -0.1, -0.2, 1, -0.1, -0.5, 1, 0, -0.6, 1, -0.4, -0.6, 1, 0, -0.5, 1, 0, -0.5, 1, -0.4, -0.6, 1, -0.4, 0.5, 1, 0.5, 0.4, 1, -0.4, 0.4, 1, 0.5, 0.5, 1, 0.5, 0.5, 1, -0.4, 0.4, 1, -0.4, 0.4, 1, -0.4, -0.5, 1, -0.5, -0.5, 1, -0.4, 0.4, 1, -0.4, 0.4, 1, -0.5, -0.5, 1, -0.5, 0.4, 0.1, 0.6, -0.5, 0.1, 0.6, -0.5, 0.1, 0.5, 0.4, 0.1, 0.6, -0.5, 0.1, 0.5, 0.4, 0.1, 0.5, 0.1, 0.1, 0.2, -0.2, 0.1, 0.2, -0.2, 0.1, -0.1, 0.1, 0.1, 0.2, -0.2, 0.1, -0.1, 0.1, 0.1, -0.1, -0.5, 0.1, 0.5, -0.6, 0.1, 0.5, -0.6, 0.1, -0.4, -0.5, 0.1, 0.5, -0.6, 0.1, -0.4, -0.5, 0.1, -0.4, 0.5, 0.1, 0.5, 0.4, 0.1, 0.5, 0.4, 0.1, -0.4, 0.5, 0.1, 0.5, 0.4, 0.1, -0.4, 0.5, 0.1, -0.4, 0.4, 0.1, -0.4, -0.5, 0.1, -0.4, -0.5, 0.1, -0.5, 0.4, 0.1, -0.4, -0.5, 0.1, -0.5, 0.4, 0.1, -0.5, -0.4, 0.6, 0.1, -0.6, 0.6, 0.1, -0.6, 0.6, 0, -0.4, 0.6, 0.1, -0.6, 0.6, 0, -0.4, 0.6, 0, 0.5, 0.7, 0.1, 0.2, 0.7, 0.1, 0.2, 0.7, 0, 0.5, 0.7, 0.1, 0.2, 0.7, 0, 0.5, 0.7, 0, -0.3, 0.7, -0.3, -0.4, 0.7, -0.3, -0.4, 0.7, -0.4, -0.3, 0.7, -0.3, -0.4, 0.7, -0.4, -0.3, 0.7, -0.4, -0.4, 0.7, -0.4, -0.5, 0.7, -0.4, -0.5, 0.7, -0.5, -0.3, 0.7, -0.4, -0.4, 0.7, -0.4, -0.5, 0.7, -0.5, -0.2, 0.7, -0.4, -0.3, 0.7, -0.4, -0.5, 0.7, -0.5, -0.2, 0.7, -0.4, -0.5, 0.7, -0.5, -0.2, 0.7, -0.5, 0.2, 0.7, -0.4, 0.1, 0.7, -0.4, 0.1, 0.7, -0.5, 0.2, 0.7, -0.4, 0.1, 0.7, -0.5, 0.2, 0.7, -0.5, 0.5, 1.1, 0.6, -0.6, 1.1, 0.6, -0.5, 1.1, 0.5, 0.5, 1.1, 0.6, -0.5, 1.1, 0.5, 0.4, 1.1, 0.5, 0.1, 1.1, 0.2, -0.2, 1.1, 0.2, -0.2, 1.1, -0.1, 0.1, 1.1, 0.2, -0.2, 1.1, -0.1, 0.1, 1.1, -0.1, -0.5, 1.1, 0.5, -0.6, 1.1, 0.6, -0.5, 1.1, -0.4, 0.5, 1.1, 0.6, 0.4, 1.1, 0.5, 0.4, 1.1, -0.4, -0.5, 1.1, -0.4, -0.6, 1.1, 0.6, -0.6, 1.1, -0.5, 0.4, 1.1, -0.4, -0.5, 1.1, -0.4, -0.6, 1.1, -0.5, 0.5, 1.1, 0.6, 0.4, 1.1, -0.4, 0.5, 1.1, -0.5, 0.4, 1.1, -0.4, -0.6, 1.1, -0.5, 0.5, 1.1, -0.5)
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_vboyp"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mwrqo"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lsw0j"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qrx78"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_3h22o"]
+size = Vector3(1.11, 1.11, 1.11)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1aje6"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
 
 [node name="puzzle_box_test" type="Node3D"]
 
@@ -37,40 +49,110 @@ environment = SubResource("Environment_iay8a")
 transform = Transform3D(-0.866024, -0.433016, 0.250001, 0, 0.499998, 0.866026, -0.500003, 0.749999, -0.43301, 0, 0, 0)
 shadow_enabled = true
 
-[node name="PuzzleBox" type="Area3D" parent="." node_paths=PackedStringArray("camera", "marker")]
+[node name="UI" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="HUD" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+script = ExtResource("2_ogw50")
+
+[node name="Label_Level" type="Label" parent="UI/HUD"]
+custom_minimum_size = Vector2(400, 40)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -112.5
+offset_top = 50.0
+offset_right = 112.5
+offset_bottom = 79.0
+grow_horizontal = 2
+scale = Vector2(1.04211, 1.04211)
+pivot_offset = Vector2(200, 20)
+text = "level one"
+label_settings = ExtResource("2_08hyc")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label_CompleteText" type="Label" parent="UI/HUD"]
+custom_minimum_size = Vector2(400, 40)
+layout_mode = 0
+offset_left = 440.0
+offset_top = 630.0
+offset_right = 840.0
+offset_bottom = 670.0
+pivot_offset = Vector2(200, 20)
+text = "level complete!"
+label_settings = ExtResource("2_08hyc")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button_SelectLeft" type="Button" parent="UI/HUD"]
+custom_minimum_size = Vector2(40, 65)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -490.0
+offset_top = -35.0
+offset_right = -450.0
+offset_bottom = 35.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(20, 35)
+theme_override_fonts/font = ExtResource("3_ux0cb")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/normal = SubResource("StyleBoxEmpty_n4xnl")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_vboyp")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_mwrqo")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_lsw0j")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qrx78")
+text = "<"
+icon_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Button_SelectRight" type="Button" parent="UI/HUD"]
+custom_minimum_size = Vector2(40, 65)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 450.0
+offset_top = -32.5
+offset_right = 490.0
+offset_bottom = 37.5
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(20, 35)
+theme_override_fonts/font = ExtResource("3_ux0cb")
+theme_override_font_sizes/font_size = 64
+theme_override_styles/normal = SubResource("StyleBoxEmpty_n4xnl")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_vboyp")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_mwrqo")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_lsw0j")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qrx78")
+text = ">"
+icon_alignment = 1
+
+[node name="PuzzleBoxManager" type="Node3D" parent="."]
 script = ExtResource("1_f23ct")
-camera = NodePath("../CameraPivot/Camera3D")
-marker = NodePath("")
+puzzles = [ExtResource("7_1s8uu"), ExtResource("7_1s8uu"), ExtResource("7_1s8uu")]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PuzzleBox"]
-shape = SubResource("BoxShape3D_xbf01")
+[node name="Camera" parent="PuzzleBoxManager" instance=ExtResource("6_axqi4")]
 
-[node name="PuzzleGeometry" type="StaticBody3D" parent="PuzzleBox"]
+[node name="PuzzleBox" parent="PuzzleBoxManager" instance=ExtResource("7_1s8uu")]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="PuzzleBox/PuzzleGeometry"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.05, -0.55, -0.05)
-mesh = ExtResource("3_6wrra")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="PuzzleBox/PuzzleGeometry"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.05, -0.55, -0.05)
-shape = SubResource("ConcavePolygonShape3D_1gp36")
-
-[node name="Player" parent="PuzzleBox" instance=ExtResource("2_201jb")]
-continuous_cd = true
-freeze = true
-
-[node name="Goal" parent="PuzzleBox" instance=ExtResource("5_upn66")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0.1, -0.4)
-
-[node name="CameraPivot" type="Node3D" parent="."]
-transform = Transform3D(-0.707107, -0.241845, 0.664463, 0, 0.939693, 0.34202, -0.707107, 0.241845, -0.664463, 0, 0, 0)
-script = ExtResource("2_3wgyy")
-
-[node name="Camera3D" type="Camera3D" parent="CameraPivot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
-fov = 24.0
-size = 3.0
-
-[connection signal="body_shape_exited" from="PuzzleBox" to="PuzzleBox" method="_on_body_shape_exited"]
-[connection signal="rotate_event" from="PuzzleBox" to="PuzzleBox/Player" method="_on_puzzle_box_rotate_event"]
-[connection signal="puzzle_complete" from="PuzzleBox/Goal" to="PuzzleBox" method="_on_goal_puzzle_complete"]
+[node name="TransitionCube" type="MeshInstance3D" parent="PuzzleBoxManager"]
+visible = false
+mesh = SubResource("BoxMesh_3h22o")
+surface_material_override/0 = SubResource("StandardMaterial3D_1aje6")
