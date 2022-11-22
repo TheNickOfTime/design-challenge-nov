@@ -2,6 +2,7 @@ extends Node3D
 
 #Signals------------------------------------------------------------------------
 signal rotate_event(is_rotating : bool)
+signal new_level(level_name : String)
 
 #Export variables---------------------------------------------------------------
 @export var puzzles : Array[PackedScene]
@@ -20,6 +21,15 @@ var next_rot : Transform3D
 var current_direction : Vector3
 var last_direction : Vector3
 var current_level_index : int
+var transitioning_level : bool
+
+var level_dictionary = [
+	"one",
+	"two",
+	"three",
+	"four",
+	"five"
+]
 
 func _ready():
 	print(camera)
@@ -85,6 +95,9 @@ func rotate_cube(new_rotation : Transform3D):
 func get_new_rotation(direction : Vector3) -> Transform3D:
 	return puzzle_box.transform.rotated(direction, rotate_degrees)
 
+func get_new_rotation_d(direction : Vector3, degrees : float) -> Transform3D:
+	return puzzle_box.transform.rotated(direction, degrees)
+
 
 func orient_rotation(original_direction : Vector3):
 	var camera_basis : Vector3 = camera.global_transform.basis.z
@@ -122,29 +135,48 @@ func increment_level_index (is_positive : bool):
 
 
 func swap_puzzle(new_puzzle : PackedScene):
+	if transitioning_level: return
+
+	transitioning_level = true
+
 	var old_scene = puzzle_box
 	var new_scene = new_puzzle.instantiate()
 
+	#Grow cube
 	var transition_tween = get_tree().create_tween()
 	transition_tween.tween_property(transition_cube, "scale", Vector3.ONE, 0.5)
 	transition_cube.scale = Vector3.ZERO
 	transition_cube.visible = true
 	await transition_tween.finished
 
+	#Remove old level
 	remove_child(old_scene)
+	emit_signal("new_level", "???")
 
-	var short_timer = get_tree().create_timer(0.25)
-	await short_timer.timeout
+	#Rotate Cube
+	transition_tween = get_tree().create_tween()
+	transition_tween.tween_property(transition_cube, 'rotation:y', transition_cube.rotation.y + deg_to_rad(180), 0.5)
+	await transition_tween.finished
 
+	transition_tween = get_tree().create_tween()
+	transition_tween.tween_property(transition_cube, 'rotation:x', transition_cube.rotation.x + deg_to_rad(180), 0.5)
+	await transition_tween.finished
+
+	transition_tween = get_tree().create_tween()
+	transition_tween.tween_property(transition_cube, 'rotation:y', transition_cube.rotation.y + deg_to_rad(180), 0.5)
+	await transition_tween.finished
+
+	#Add new level
 	add_child(new_scene)
 	puzzle_box = new_scene
+	emit_signal("new_level", level_dictionary[current_level_index])
 
+	#Shrink Cube
 	transition_tween = get_tree().create_tween()
 	transition_tween.tween_property(transition_cube, "scale", Vector3.ZERO, 0.5)
 
 	await transition_tween.finished
-
-	
+	transitioning_level = false
 
 
 func _on_body_shape_exited(body_rid, body, body_shape_index, local_shape_index):
@@ -158,3 +190,8 @@ func _on_body_shape_exited(body_rid, body, body_shape_index, local_shape_index):
 
 func _on_goal_puzzle_complete():
 	puzzle_complete()
+
+
+func _on_hud_change_level(is_positive : bool):
+	increment_level_index(is_positive)
+	swap_puzzle(puzzles[current_level_index])

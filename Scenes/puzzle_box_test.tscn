@@ -1,7 +1,7 @@
-[gd_scene load_steps=17 format=3 uid="uid://eg2xvgk6wtp2"]
+[gd_scene load_steps=17 format=3 uid="uid://pxlkk2ibbhjn"]
 
 [ext_resource type="Material" uid="uid://d26unq8uckvjy" path="res://Shaders/space_skybox.tres" id="1_8s33p"]
-[ext_resource type="Script" path="res://Scripts/PuzzleBox.gd" id="1_f23ct"]
+[ext_resource type="Script" path="res://Scripts/PuzzleBoxManager.gd" id="1_f23ct"]
 [ext_resource type="LabelSettings" uid="uid://djp8mmrg5wn8t" path="res://UI/label_title.tres" id="2_08hyc"]
 [ext_resource type="Script" path="res://Scripts/HUD.gd" id="2_ogw50"]
 [ext_resource type="SystemFont" uid="uid://clq0ndivqebeu" path="res://UI/default_font.tres" id="3_ux0cb"]
@@ -50,7 +50,6 @@ transform = Transform3D(-0.866024, -0.433016, 0.250001, 0, 0.499998, 0.866026, -
 shadow_enabled = true
 
 [node name="UI" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="HUD" type="Control" parent="UI"]
 layout_mode = 3
@@ -156,3 +155,8 @@ puzzles = [ExtResource("7_1s8uu"), ExtResource("7_1s8uu"), ExtResource("7_1s8uu"
 visible = false
 mesh = SubResource("BoxMesh_3h22o")
 surface_material_override/0 = SubResource("StandardMaterial3D_1aje6")
+
+[connection signal="change_level" from="UI/HUD" to="PuzzleBoxManager" method="_on_hud_change_level"]
+[connection signal="button_up" from="UI/HUD/Button_SelectLeft" to="UI/HUD" method="_on_button_select_left_button_up"]
+[connection signal="button_up" from="UI/HUD/Button_SelectRight" to="UI/HUD" method="_on_button_select_right_button_up"]
+[connection signal="new_level" from="PuzzleBoxManager" to="UI/HUD" method="_on_puzzle_box_manager_new_level"]

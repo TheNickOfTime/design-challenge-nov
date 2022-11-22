@@ -1,5 +1,6 @@
 extends Control
 
+signal change_level(is_positive : bool)
 
 @export var test_text : Label
 
@@ -28,3 +29,14 @@ func pulsate_text(element : Control):
 	pulsate_text(element)
 
 
+func _on_button_select_right_button_up():
+	emit_signal("change_level", true)
+	pass
+
+func _on_button_select_left_button_up():
+	emit_signal("change_level", false)
+	pass
+
+
+func _on_puzzle_box_manager_new_level(level_name : String):
+	$Label_Level.text = "level " + level_name
