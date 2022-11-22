@@ -1,9 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://hey7lwfxt0b"]
+[gd_scene load_steps=12 format=3 uid="uid://bw2c0bi56e15"]
 
 [ext_resource type="Material" uid="uid://d26unq8uckvjy" path="res://Shaders/space_skybox.tres" id="1_yk1q8"]
 [ext_resource type="StyleBox" uid="uid://ghrdkcpms46e" path="res://UI/stylebox_panel.tres" id="2_gcrqv"]
 [ext_resource type="PackedScene" uid="uid://eeyjhjgpr0vp" path="res://Prefabs/camera.tscn" id="3_hlosp"]
-[ext_resource type="Script" path="res://Scripts/PuzzleBox.gd" id="4_7v5m4"]
+[ext_resource type="Script" path="res://Scripts/PuzzleBoxManager.gd" id="4_7v5m4"]
 [ext_resource type="ArrayMesh" uid="uid://dg6q6wowk2sod" path="res://Geometry/cube_test.obj" id="5_55csd"]
 [ext_resource type="PackedScene" uid="uid://c0esqjhu7aanc" path="res://Scenes/puzzle_box_player.tscn" id="6_wllej"]
 [ext_resource type="PackedScene" uid="uid://bonou2nfe7to5" path="res://Prefabs/goal.tscn" id="7_jod70"]
