@@ -17,5 +17,11 @@ func start_sequence():
 
 
 func _on_puzzle_box_rotate_event(is_rotating : bool):
-	self.freeze = is_rotating
-	# print(freeze)
+	freeze = is_rotating
+#	print("freeze: ", is_rotating)
+
+
+func _on_sleeping_state_changed():
+	if sleeping && !freeze:
+		position = position.snapped(Vector3.ONE * 0.1)
+		print_debug("snapped position")

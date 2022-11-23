@@ -61,7 +61,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 script = ExtResource("2_ogw50")
 
-[node name="Label_Level" type="Label" parent="UI/HUD"]
+[node name="Label_LevelText" type="Label" parent="UI/HUD"]
 custom_minimum_size = Vector2(400, 40)
 layout_mode = 1
 anchors_preset = 5
@@ -74,7 +74,7 @@ offset_bottom = 79.0
 grow_horizontal = 2
 scale = Vector2(1.04211, 1.04211)
 pivot_offset = Vector2(200, 20)
-text = "level one"
+text = "level ???"
 label_settings = ExtResource("2_08hyc")
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -92,7 +92,7 @@ label_settings = ExtResource("2_08hyc")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Button_SelectLeft" type="Button" parent="UI/HUD"]
+[node name="Button_Left" type="Button" parent="UI/HUD"]
 custom_minimum_size = Vector2(40, 65)
 layout_mode = 1
 anchors_preset = 8
@@ -118,7 +118,7 @@ text = "<"
 icon_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Button_SelectRight" type="Button" parent="UI/HUD"]
+[node name="Button_Right" type="Button" parent="UI/HUD"]
 custom_minimum_size = Vector2(40, 65)
 layout_mode = 1
 anchors_preset = 8
@@ -149,14 +149,14 @@ puzzles = [ExtResource("7_1s8uu"), ExtResource("7_1s8uu"), ExtResource("7_1s8uu"
 
 [node name="Camera" parent="PuzzleBoxManager" instance=ExtResource("6_axqi4")]
 
-[node name="PuzzleBox" parent="PuzzleBoxManager" instance=ExtResource("7_1s8uu")]
-
 [node name="TransitionCube" type="MeshInstance3D" parent="PuzzleBoxManager"]
 visible = false
 mesh = SubResource("BoxMesh_3h22o")
 surface_material_override/0 = SubResource("StandardMaterial3D_1aje6")
 
 [connection signal="change_level" from="UI/HUD" to="PuzzleBoxManager" method="_on_hud_change_level"]
-[connection signal="button_up" from="UI/HUD/Button_SelectLeft" to="UI/HUD" method="_on_button_select_left_button_up"]
-[connection signal="button_up" from="UI/HUD/Button_SelectRight" to="UI/HUD" method="_on_button_select_right_button_up"]
+[connection signal="button_up" from="UI/HUD/Button_Left" to="UI/HUD" method="_on_button_select_left_button_up"]
+[connection signal="button_up" from="UI/HUD/Button_Right" to="UI/HUD" method="_on_button_select_right_button_up"]
 [connection signal="new_level" from="PuzzleBoxManager" to="UI/HUD" method="_on_puzzle_box_manager_new_level"]
+[connection signal="pause" from="PuzzleBoxManager" to="UI/HUD" method="_on_puzzle_box_manager_pause"]
+[connection signal="camera_moved" from="PuzzleBoxManager/Camera" to="UI/HUD" method="_on_camera_camera_moved"]
