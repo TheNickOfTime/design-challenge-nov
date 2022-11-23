@@ -3,6 +3,7 @@ extends Node3D
 #Signals------------------------------------------------------------------------
 signal rotate_event(is_rotating : bool)
 signal new_level(level_name : String)
+signal pause(is_paused : bool)
 
 #Export variables---------------------------------------------------------------
 @export var puzzles : Array[PackedScene]
@@ -22,6 +23,8 @@ var current_direction : Vector3
 var last_direction : Vector3
 var current_level_index : int
 var transitioning_level : bool
+var is_paused : bool
+
 
 var level_dictionary = [
 	"one",
@@ -36,6 +39,8 @@ func _ready():
 	var players = get_tree().get_nodes_in_group("Player")
 	for player in players:
 		pass
+	
+	swap_puzzle(puzzles[current_level_index])
 
 
 func _process(delta):
@@ -65,11 +70,9 @@ func _input(event):
 		new_rot = get_new_rotation(orient_rotation(current_direction))
 		rotate_cube(new_rot)
 	
-	if event is InputEventKey:
-		if event.keycode == KEY_ENTER && event.pressed:
-			increment_level_index(true)
-			swap_puzzle(puzzles[current_level_index])
-
+	if event.is_action_pressed("pause"):
+		is_paused = !is_paused
+		emit_signal("pause", is_paused)
 
 
 func rotate_cube(new_rotation : Transform3D):
@@ -86,10 +89,9 @@ func rotate_cube(new_rotation : Transform3D):
 		continue_rotating = false
 		is_rotating = false
 		rotate_cube(get_new_rotation(orient_rotation(current_direction)))
-		return
-
-	is_rotating = false
-	emit_signal("rotate_event", false)
+	else:
+		is_rotating = false
+		emit_signal("rotate_event", false)
 
 
 func get_new_rotation(direction : Vector3) -> Transform3D:
@@ -150,8 +152,9 @@ func swap_puzzle(new_puzzle : PackedScene):
 	await transition_tween.finished
 
 	#Remove old level
-	remove_child(old_scene)
-	emit_signal("new_level", "???")
+	if old_scene != null:
+		remove_child(old_scene)
+		emit_signal("new_level", "???")
 
 	#Rotate Cube
 	transition_tween = get_tree().create_tween()
@@ -170,6 +173,9 @@ func swap_puzzle(new_puzzle : PackedScene):
 	add_child(new_scene)
 	puzzle_box = new_scene
 	emit_signal("new_level", level_dictionary[current_level_index])
+	
+	#Connect signals
+	rotate_event.connect(puzzle_box.get_node("Player")._on_puzzle_box_rotate_event)
 
 	#Shrink Cube
 	transition_tween = get_tree().create_tween()
@@ -195,3 +201,7 @@ func _on_goal_puzzle_complete():
 func _on_hud_change_level(is_positive : bool):
 	increment_level_index(is_positive)
 	swap_puzzle(puzzles[current_level_index])
+
+
+func _on_camera_camera_moved():
+	pass # Replace with function body.
