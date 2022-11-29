@@ -70,7 +70,6 @@ inactive_color = Color(0.5, 0.5, 0.5, 1)
 
 [node name="Label_LevelText" type="Label" parent="UI/HUD"]
 custom_minimum_size = Vector2(400, 40)
-layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -87,7 +86,6 @@ vertical_alignment = 1
 
 [node name="Label_CompleteText" type="Label" parent="UI/HUD"]
 custom_minimum_size = Vector2(400, 40)
-layout_mode = 0
 offset_left = 440.0
 offset_top = 630.0
 offset_right = 840.0
@@ -100,7 +98,6 @@ vertical_alignment = 1
 
 [node name="Button_Left" type="Button" parent="UI/HUD"]
 custom_minimum_size = Vector2(40, 65)
-layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -127,7 +124,6 @@ icon_alignment = 1
 
 [node name="Button_Right" type="Button" parent="UI/HUD"]
 custom_minimum_size = Vector2(40, 65)
-layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -153,7 +149,6 @@ text = ">"
 icon_alignment = 1
 
 [node name="Level_Indicators" type="HBoxContainer" parent="UI/HUD"]
-layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_top = 75.0
@@ -165,7 +160,6 @@ alignment = 1
 
 [node name="Indicator" type="ColorRect" parent="UI/HUD/Level_Indicators"]
 custom_minimum_size = Vector2(10, 10)
-layout_mode = 2
 offset_left = 635.0
 offset_right = 645.0
 offset_bottom = 10.0

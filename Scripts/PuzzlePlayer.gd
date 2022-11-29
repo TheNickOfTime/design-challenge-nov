@@ -25,3 +25,7 @@ func _on_sleeping_state_changed():
 	if sleeping && !freeze:
 		position = position.snapped(Vector3.ONE * 0.1)
 #		print_debug("snapped position")
+
+
+func _on_body_entered(body):
+	$AudioStreamPlayer.play()
