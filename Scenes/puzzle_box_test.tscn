@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://pxlkk2ibbhjn"]
+[gd_scene load_steps=24 format=3 uid="uid://pxlkk2ibbhjn"]
 
 [ext_resource type="Material" uid="uid://d26unq8uckvjy" path="res://Shaders/space_skybox.tres" id="1_8s33p"]
 [ext_resource type="Script" path="res://Scripts/PuzzleBoxManager.gd" id="1_f23ct"]
@@ -7,6 +7,13 @@
 [ext_resource type="SystemFont" uid="uid://clq0ndivqebeu" path="res://UI/default_font.tres" id="3_ux0cb"]
 [ext_resource type="PackedScene" uid="uid://eeyjhjgpr0vp" path="res://Prefabs/camera.tscn" id="6_axqi4"]
 [ext_resource type="PackedScene" uid="uid://ctn60273yv70f" path="res://Scenes/Puzzles/puzzle_box_template.tscn" id="7_1s8uu"]
+[ext_resource type="AudioStream" uid="uid://bev55lvfp8uew" path="res://Audio/636628__eponn__melodic-rock-slide-fx-1.wav" id="7_6eoo4"]
+[ext_resource type="AudioStream" uid="uid://df8fm5jc5x2tc" path="res://Audio/636627__eponn__melodic-rock-slide-fx-2.wav" id="8_bu6rj"]
+[ext_resource type="AudioStream" uid="uid://boxsb0h4dvty1" path="res://Audio/636626__eponn__melodic-rock-slide-fx-3.wav" id="9_s0h6q"]
+[ext_resource type="AudioStream" uid="uid://bglvsoaquwhor" path="res://Audio/95000__j1987__cinderblockmove.wav" id="10_rku41"]
+[ext_resource type="AudioStream" uid="uid://d4jayb20kbpk3" path="res://Audio/95001__j1987__cinderblockmove2.wav" id="11_j255i"]
+[ext_resource type="AudioStream" uid="uid://c7abvfmi218w5" path="res://Audio/185849__lloydevans09__warping.wav" id="12_1q1qo"]
+[ext_resource type="AudioStream" uid="uid://nqvnor8u7yw" path="res://Audio/321723__rhodesmas__deep-space-vibrations-ambience-loop.ogg" id="13_gi0n4"]
 
 [sub_resource type="Sky" id="Sky_lihpv"]
 sky_material = ExtResource("1_8s33p")
@@ -107,6 +114,8 @@ offset_bottom = 35.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(20, 35)
+theme_override_colors/font_hover_color = Color(0.75, 0.75, 0.75, 1)
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_ux0cb")
 theme_override_font_sizes/font_size = 64
 theme_override_styles/normal = SubResource("StyleBoxEmpty_n4xnl")
@@ -116,7 +125,6 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_lsw0j")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_qrx78")
 text = "<"
 icon_alignment = 1
-metadata/_edit_use_anchors_ = true
 
 [node name="Button_Right" type="Button" parent="UI/HUD"]
 custom_minimum_size = Vector2(40, 65)
@@ -133,6 +141,8 @@ offset_bottom = 37.5
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(20, 35)
+theme_override_colors/font_hover_color = Color(0.75, 0.75, 0.75, 1)
+theme_override_colors/font_disabled_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("3_ux0cb")
 theme_override_font_sizes/font_size = 64
 theme_override_styles/normal = SubResource("StyleBoxEmpty_n4xnl")
@@ -146,6 +156,9 @@ icon_alignment = 1
 [node name="PuzzleBoxManager" type="Node3D" parent="."]
 script = ExtResource("1_f23ct")
 puzzles = [ExtResource("7_1s8uu"), ExtResource("7_1s8uu"), ExtResource("7_1s8uu")]
+transition_sounds = [ExtResource("7_6eoo4"), ExtResource("8_bu6rj"), ExtResource("9_s0h6q")]
+rotate_sounds = [ExtResource("10_rku41"), ExtResource("11_j255i")]
+cube_sounds = [ExtResource("12_1q1qo")]
 
 [node name="Camera" parent="PuzzleBoxManager" instance=ExtResource("6_axqi4")]
 
@@ -154,9 +167,16 @@ visible = false
 mesh = SubResource("BoxMesh_3h22o")
 surface_material_override/0 = SubResource("StandardMaterial3D_1aje6")
 
+[node name="Ambience" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_gi0n4")
+volume_db = -10.0
+autoplay = true
+
 [connection signal="change_level" from="UI/HUD" to="PuzzleBoxManager" method="_on_hud_change_level"]
 [connection signal="button_up" from="UI/HUD/Button_Left" to="UI/HUD" method="_on_button_select_left_button_up"]
 [connection signal="button_up" from="UI/HUD/Button_Right" to="UI/HUD" method="_on_button_select_right_button_up"]
 [connection signal="new_level" from="PuzzleBoxManager" to="UI/HUD" method="_on_puzzle_box_manager_new_level"]
 [connection signal="pause" from="PuzzleBoxManager" to="UI/HUD" method="_on_puzzle_box_manager_pause"]
+[connection signal="pause" from="PuzzleBoxManager" to="PuzzleBoxManager/Camera" method="_on_puzzle_box_manager_pause"]
 [connection signal="camera_moved" from="PuzzleBoxManager/Camera" to="UI/HUD" method="_on_camera_camera_moved"]
+[connection signal="camera_moved" from="PuzzleBoxManager/Camera" to="PuzzleBoxManager" method="_on_camera_camera_moved"]

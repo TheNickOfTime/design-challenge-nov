@@ -4,9 +4,13 @@ extends Node3D
 signal rotate_event(is_rotating : bool)
 signal new_level(level_name : String)
 signal pause(is_paused : bool)
+#signal freeze_input(is_frozen : bool)
 
 #Export variables---------------------------------------------------------------
 @export var puzzles : Array[PackedScene]
+@export var transition_sounds : Array[AudioStream]
+@export var rotate_sounds : Array[AudioStream]
+@export var cube_sounds : Array[AudioStream]
 
 #OnReady variables--------------------------------------------------------------
 @onready var rotate_degrees : float = deg_to_rad(90)
@@ -35,15 +39,19 @@ var level_dictionary = [
 ]
 
 func _ready():
-	print(camera)
+#	print(camera)
 	var players = get_tree().get_nodes_in_group("Player")
 	for player in players:
 		pass
 	
+	
+	
+	pause_game(true)
 	swap_puzzle(puzzles[current_level_index])
 
 
 func _process(delta):
+#	print(is_paused)
 	pass
 
 
@@ -71,8 +79,12 @@ func _input(event):
 		rotate_cube(new_rot)
 	
 	if event.is_action_pressed("pause"):
-		is_paused = !is_paused
-		emit_signal("pause", is_paused)
+		pause_game(!is_paused)
+
+
+func pause_game(pause_state : bool):
+	is_paused = pause_state
+	emit_signal("pause", is_paused)
 
 
 func rotate_cube(new_rotation : Transform3D):
@@ -83,6 +95,8 @@ func rotate_cube(new_rotation : Transform3D):
 	# Wait for rotation to happen
 	var tween = get_tree().create_tween()
 	tween.tween_property(puzzle_box, "transform", new_rotation, rotate_time)
+#	var index = randi_range(0, 1)
+	play_new_sound(rotate_sounds[1])
 	await tween.finished
 
 	if continue_rotating:
@@ -133,7 +147,7 @@ func puzzle_complete():
 func increment_level_index (is_positive : bool):
 	current_level_index += 1 if is_positive else -1
 	current_level_index = wrap(current_level_index, 0, puzzles.size())
-	print(current_level_index)
+#	print(current_level_index)
 
 
 func swap_puzzle(new_puzzle : PackedScene):
@@ -145,6 +159,7 @@ func swap_puzzle(new_puzzle : PackedScene):
 	var new_scene = new_puzzle.instantiate()
 
 	#Grow cube
+	play_new_sound(cube_sounds[0])
 	var transition_tween = get_tree().create_tween()
 	transition_tween.tween_property(transition_cube, "scale", Vector3.ONE, 0.5)
 	transition_cube.scale = Vector3.ZERO
@@ -157,16 +172,19 @@ func swap_puzzle(new_puzzle : PackedScene):
 		emit_signal("new_level", "???")
 
 	#Rotate Cube
+	play_new_sound(transition_sounds[0])
 	transition_tween = get_tree().create_tween()
-	transition_tween.tween_property(transition_cube, 'rotation:y', transition_cube.rotation.y + deg_to_rad(180), 0.5)
+	transition_tween.tween_property(transition_cube, 'rotation:y', transition_cube.rotation.y + deg_to_rad(180), 0.7)
 	await transition_tween.finished
-
+	
+	play_new_sound(transition_sounds[1])
 	transition_tween = get_tree().create_tween()
-	transition_tween.tween_property(transition_cube, 'rotation:x', transition_cube.rotation.x + deg_to_rad(180), 0.5)
+	transition_tween.tween_property(transition_cube, 'rotation:x', transition_cube.rotation.x + deg_to_rad(180), 0.7)
 	await transition_tween.finished
-
+	
+	play_new_sound(transition_sounds[2])
 	transition_tween = get_tree().create_tween()
-	transition_tween.tween_property(transition_cube, 'rotation:y', transition_cube.rotation.y + deg_to_rad(180), 0.5)
+	transition_tween.tween_property(transition_cube, 'rotation:y', transition_cube.rotation.y + deg_to_rad(180), 0.7)
 	await transition_tween.finished
 
 	#Add new level
@@ -178,11 +196,22 @@ func swap_puzzle(new_puzzle : PackedScene):
 	rotate_event.connect(puzzle_box.get_node("Player")._on_puzzle_box_rotate_event)
 
 	#Shrink Cube
+	play_new_sound(cube_sounds[0])
 	transition_tween = get_tree().create_tween()
 	transition_tween.tween_property(transition_cube, "scale", Vector3.ZERO, 0.5)
 
 	await transition_tween.finished
 	transitioning_level = false
+
+
+func play_new_sound(audio_stream : AudioStream):
+	var player : AudioStreamPlayer = AudioStreamPlayer.new()
+	player.stream = audio_stream
+	add_child(player)
+	
+	player.play()
+	await player.finished
+	player.queue_free()
 
 
 func _on_body_shape_exited(body_rid, body, body_shape_index, local_shape_index):
@@ -204,4 +233,4 @@ func _on_hud_change_level(is_positive : bool):
 
 
 func _on_camera_camera_moved():
-	pass # Replace with function body.
+	pause_game(false)

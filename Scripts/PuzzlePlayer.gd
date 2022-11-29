@@ -24,4 +24,4 @@ func _on_puzzle_box_rotate_event(is_rotating : bool):
 func _on_sleeping_state_changed():
 	if sleeping && !freeze:
 		position = position.snapped(Vector3.ONE * 0.1)
-		print_debug("snapped position")
+#		print_debug("snapped position")
