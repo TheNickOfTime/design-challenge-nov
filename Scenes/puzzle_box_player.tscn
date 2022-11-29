@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://c0esqjhu7aanc"]
+[gd_scene load_steps=6 format=3 uid="uid://c0esqjhu7aanc"]
 
 [ext_resource type="Script" path="res://Scripts/PuzzlePlayer.gd" id="1_8ja8y"]
+[ext_resource type="AudioStream" uid="uid://brvbf7acb4gy1" path="res://Audio/Single Water Droplet-SoundBible.com-425249738.wav" id="2_spgl8"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_svwbw"]
 radius = 0.05
@@ -15,6 +16,8 @@ emission = Color(0.7, 0.7, 0.7, 1)
 size = Vector3(0.1, 0.1, 0.1)
 
 [node name="Player" type="RigidBody3D" groups=["Player"]]
+max_contacts_reported = 1
+contact_monitor = true
 lock_rotation = true
 script = ExtResource("1_8ja8y")
 
@@ -26,4 +29,8 @@ surface_material_override/0 = SubResource("StandardMaterial3D_pnyq7")
 transform = Transform3D(1, -0.000268565, -0.000126086, 0.000268565, 1, -3.04526e-06, 0.000126087, 3.0114e-06, 1, 0, 0, 0)
 shape = SubResource("BoxShape3D_oh1xk")
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_spgl8")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="sleeping_state_changed" from="." to="." method="_on_sleeping_state_changed"]
