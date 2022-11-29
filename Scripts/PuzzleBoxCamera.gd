@@ -29,13 +29,18 @@ func _process(delta):
 
 
 func _input(event):
-	if event is InputEventMouseButton:
-		var mouse_button = event as InputEventMouseButton
-		is_panning = mouse_button.is_pressed()
-		reset_idle_timer()
+	if event is InputEventMouse:
+		var mouse_event = event as InputEventMouse
 	
-	if event is InputEventMouseMotion:
-		mouse_delta = event.relative
+		if mouse_event is InputEventMouseButton and mouse_event.button_mask == 1:
+			var mouse_button = event as InputEventMouseButton
+			is_panning = mouse_button.is_pressed()
+		
+		if mouse_event is InputEventMouseMotion and mouse_event.button_mask == 1:
+			mouse_delta = event.relative
+			if mouse_delta.length() > 1 && is_panning:
+				reset_idle_timer()
+				
 
 	if event.is_action_pressed("rotate_cube"):
 		reset_idle_timer()
@@ -55,3 +60,8 @@ func reset_idle_timer():
 
 func _on_timer_timeout():
 	is_idle = true
+
+
+func _on_puzzle_box_manager_pause(is_paused):
+	if is_paused:
+		is_idle = true
