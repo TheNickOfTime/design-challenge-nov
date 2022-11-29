@@ -44,7 +44,6 @@ fog_sky_affect = 0.0
 size = Vector3(1.11, 1.11, 1.11)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1aje6"]
-emission_enabled = true
 emission = Color(1, 1, 1, 1)
 
 [node name="puzzle_box_test" type="Node3D"]
@@ -67,6 +66,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 script = ExtResource("2_ogw50")
+inactive_color = Color(0.5, 0.5, 0.5, 1)
 
 [node name="Label_LevelText" type="Label" parent="UI/HUD"]
 custom_minimum_size = Vector2(400, 40)
@@ -74,12 +74,11 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -112.5
-offset_top = 50.0
-offset_right = 112.5
-offset_bottom = 79.0
+offset_left = -200.0
+offset_top = 30.0
+offset_right = 200.0
+offset_bottom = 70.0
 grow_horizontal = 2
-scale = Vector2(1.04211, 1.04211)
 pivot_offset = Vector2(200, 20)
 text = "level ???"
 label_settings = ExtResource("2_08hyc")
@@ -153,6 +152,24 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_qrx78")
 text = ">"
 icon_alignment = 1
 
+[node name="Level_Indicators" type="HBoxContainer" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 75.0
+offset_bottom = 85.0
+grow_horizontal = 2
+pivot_offset = Vector2(640, 5)
+theme_override_constants/separation = 7
+alignment = 1
+
+[node name="Indicator" type="ColorRect" parent="UI/HUD/Level_Indicators"]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+offset_left = 635.0
+offset_right = 645.0
+offset_bottom = 10.0
+
 [node name="PuzzleBoxManager" type="Node3D" parent="."]
 script = ExtResource("1_f23ct")
 puzzles = [ExtResource("7_1s8uu"), ExtResource("7_1s8uu"), ExtResource("7_1s8uu")]
@@ -175,6 +192,7 @@ autoplay = true
 [connection signal="change_level" from="UI/HUD" to="PuzzleBoxManager" method="_on_hud_change_level"]
 [connection signal="button_up" from="UI/HUD/Button_Left" to="UI/HUD" method="_on_button_select_left_button_up"]
 [connection signal="button_up" from="UI/HUD/Button_Right" to="UI/HUD" method="_on_button_select_right_button_up"]
+[connection signal="initialize_levels" from="PuzzleBoxManager" to="UI/HUD" method="_on_puzzle_box_manager_initialize_levels"]
 [connection signal="new_level" from="PuzzleBoxManager" to="UI/HUD" method="_on_puzzle_box_manager_new_level"]
 [connection signal="pause" from="PuzzleBoxManager" to="UI/HUD" method="_on_puzzle_box_manager_pause"]
 [connection signal="pause" from="PuzzleBoxManager" to="PuzzleBoxManager/Camera" method="_on_puzzle_box_manager_pause"]

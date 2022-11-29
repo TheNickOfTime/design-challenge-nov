@@ -2,8 +2,9 @@ extends Node3D
 
 #Signals------------------------------------------------------------------------
 signal rotate_event(is_rotating : bool)
-signal new_level(level_name : String)
+signal new_level(level_index : int)
 signal pause(is_paused : bool)
+signal initialize_levels(count : int)
 #signal freeze_input(is_frozen : bool)
 
 #Export variables---------------------------------------------------------------
@@ -30,22 +31,13 @@ var transitioning_level : bool
 var is_paused : bool
 
 
-var level_dictionary = [
-	"one",
-	"two",
-	"three",
-	"four",
-	"five"
-]
-
 func _ready():
 #	print(camera)
-	var players = get_tree().get_nodes_in_group("Player")
-	for player in players:
-		pass
+#	var players = get_tree().get_nodes_in_group("Player")
+#	for player in players:
+#		pass
 	
-	
-	
+	emit_signal("initialize_levels", puzzles.size())
 	pause_game(true)
 	swap_puzzle(puzzles[current_level_index])
 
@@ -169,7 +161,7 @@ func swap_puzzle(new_puzzle : PackedScene):
 	#Remove old level
 	if old_scene != null:
 		remove_child(old_scene)
-		emit_signal("new_level", "???")
+		emit_signal("new_level", -1)
 
 	#Rotate Cube
 	play_new_sound(transition_sounds[0])
@@ -190,7 +182,7 @@ func swap_puzzle(new_puzzle : PackedScene):
 	#Add new level
 	add_child(new_scene)
 	puzzle_box = new_scene
-	emit_signal("new_level", level_dictionary[current_level_index])
+	emit_signal("new_level", current_level_index)
 	
 	#Connect signals
 	rotate_event.connect(puzzle_box.get_node("Player")._on_puzzle_box_rotate_event)

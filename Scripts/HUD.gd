@@ -10,10 +10,22 @@ const fade_out_time : float = 0.5
 @onready var button_left : Button = $Button_Left
 @onready var button_right : Button = $Button_Right
 
+@export var active_color : Color = Color.WHITE
+@export var inactive_color : Color = Color.DARK_GRAY
+
 var level_text_tween : Tween
 var complete_text_tween : Tween
 var button_left_tween : Tween
 var button_right_tween: Tween
+
+var level_dictionary = [
+	"one",
+	"two",
+	"three",
+	"four",
+	"five"
+]
+
 
 func _ready():
 	complete_text.visible = false
@@ -82,7 +94,17 @@ func _on_button_select_left_button_up():
 	pass
 
 
-func _on_puzzle_box_manager_new_level(level_name : String):
+func _on_puzzle_box_manager_new_level(level_index : int):
+	var level_name : String
+	
+	if level_index == -1:
+		level_name = "???"
+	else:
+		level_name = level_dictionary[level_index]
+		for i in $Level_Indicators.get_child_count():
+			var color = active_color if i == level_index else inactive_color
+			$Level_Indicators.get_child(i).color = color
+	
 	level_text.text = "level " + level_name
 
 
@@ -93,3 +115,12 @@ func _on_camera_camera_moved():
 
 func _on_puzzle_box_manager_pause(is_paused):
 	fade_buttons(is_paused)
+
+
+func _on_puzzle_box_manager_initialize_levels(count):
+	var indicator : Node = $Level_Indicators/Indicator
+	
+	for i in count - 1:
+		var new_indicator = indicator.duplicate()
+		new_indicator.color = inactive_color
+		$Level_Indicators.add_child(new_indicator)
