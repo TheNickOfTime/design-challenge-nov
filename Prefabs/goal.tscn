@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://bonou2nfe7to5"]
+[gd_scene load_steps=6 format=3 uid="uid://bonou2nfe7to5"]
 
 [ext_resource type="Script" path="res://Scripts/Goal.gd" id="1_oo33w"]
+[ext_resource type="AudioStream" uid="uid://c7abvfmi218w5" path="res://Audio/185849__lloydevans09__warping.wav" id="2_u8dp6"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jmeb0"]
 albedo_color = Color(0, 0.666667, 1, 0.392157)
@@ -23,6 +24,9 @@ mesh = SubResource("BoxMesh_3j8xg")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_jffkm")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_u8dp6")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]
