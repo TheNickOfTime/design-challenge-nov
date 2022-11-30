@@ -3,19 +3,20 @@
 [ext_resource type="Script" path="res://Scripts/PuzzlePlayer.gd" id="1_8ja8y"]
 [ext_resource type="AudioStream" uid="uid://brvbf7acb4gy1" path="res://Audio/Single Water Droplet-SoundBible.com-425249738.wav" id="2_spgl8"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k0vwq"]
+emission_enabled = true
+emission = Color(0.701961, 0.701961, 0.701961, 1)
+
 [sub_resource type="SphereMesh" id="SphereMesh_svwbw"]
+material = SubResource("StandardMaterial3D_k0vwq")
 radius = 0.05
 height = 0.1
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pnyq7"]
-metallic_specular = 0.0
-emission_enabled = true
-emission = Color(0.7, 0.7, 0.7, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_oh1xk"]
 size = Vector3(0.1, 0.1, 0.1)
 
 [node name="Player" type="RigidBody3D" groups=["Player"]]
+continuous_cd = true
 max_contacts_reported = 1
 contact_monitor = true
 lock_rotation = true
@@ -23,7 +24,6 @@ script = ExtResource("1_8ja8y")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_svwbw")
-surface_material_override/0 = SubResource("StandardMaterial3D_pnyq7")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, -0.000268565, -0.000126086, 0.000268565, 1, -3.04526e-06, 0.000126087, 3.0114e-06, 1, 0, 0, 0)

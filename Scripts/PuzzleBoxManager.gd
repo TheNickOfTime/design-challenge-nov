@@ -2,7 +2,7 @@ extends Node3D
 
 #Signals------------------------------------------------------------------------
 signal rotate_event(is_rotating : bool)
-signal new_level(level_index : int)
+signal new_level(level_index : int, level_ref : Node)
 signal pause(is_paused : bool)
 signal initialize_levels(count : int)
 #signal freeze_input(is_frozen : bool)
@@ -29,6 +29,7 @@ var last_direction : Vector3
 var current_level_index : int
 var transitioning_level : bool
 var is_paused : bool
+var allow_input : bool
 
 
 func _ready():
@@ -50,7 +51,6 @@ func _process(delta):
 func _input(event):
 
 	if event.is_action_pressed("rotate_cube"):
-		
 		var new_rot : Transform3D
 
 		last_direction = current_direction
@@ -67,8 +67,9 @@ func _input(event):
 		if is_rotating && current_direction == last_direction:
 			continue_rotating = true
 
-		new_rot = get_new_rotation(orient_rotation(current_direction))
-		rotate_cube(new_rot)
+		if allow_input:
+			new_rot = get_new_rotation(orient_rotation(current_direction))
+			rotate_cube(new_rot)
 	
 	if event.is_action_pressed("pause"):
 		pause_game(!is_paused)
@@ -82,6 +83,7 @@ func pause_game(pause_state : bool):
 func rotate_cube(new_rotation : Transform3D):
 	if is_rotating: return
 	is_rotating = true
+	allow_input = false
 	emit_signal("rotate_event", true)
 	
 	# Wait for rotation to happen
@@ -117,27 +119,23 @@ func orient_rotation(original_direction : Vector3):
 
 	match snapped_camera:
 		Vector3.FORWARD:
-			# print("forward")
 			pass
 		Vector3.LEFT:
-			# print("left")
 			oriented_direction.z *= -1
 		Vector3.BACK:
-			# print("back")
 			oriented_direction *= -1
 		Vector3.RIGHT:
-			# print("right")
 			oriented_direction.x *= -1
 
 	return oriented_direction
 
 
 func puzzle_complete():
-	print("puzzle")
+	allow_input = false
 
 
-func increment_level_index (is_positive : bool):
-	current_level_index += 1 if is_positive else -1
+func increment_level_index (delta : int):
+	current_level_index += delta
 	current_level_index = wrap(current_level_index, 0, puzzles.size())
 #	print(current_level_index)
 
@@ -146,6 +144,7 @@ func swap_puzzle(new_puzzle : PackedScene):
 	if transitioning_level: return
 
 	transitioning_level = true
+	allow_input = false
 
 	var old_scene = puzzle_box
 	var new_scene = new_puzzle.instantiate()
@@ -161,7 +160,7 @@ func swap_puzzle(new_puzzle : PackedScene):
 	#Remove old level
 	if old_scene != null:
 		remove_child(old_scene)
-		emit_signal("new_level", -1)
+		emit_signal("new_level", -1, null)
 
 	#Rotate Cube
 	play_new_sound(transition_sounds[0])
@@ -182,10 +181,13 @@ func swap_puzzle(new_puzzle : PackedScene):
 	#Add new level
 	add_child(new_scene)
 	puzzle_box = new_scene
-	emit_signal("new_level", current_level_index)
+	emit_signal("new_level", current_level_index, puzzle_box)
 	
 	#Connect signals
 	rotate_event.connect(puzzle_box.get_node("Player")._on_puzzle_box_rotate_event)
+	puzzle_box.body_exited.connect(self._on_puzzlebox_body_exited)
+	puzzle_box.get_node("Goal").puzzle_complete.connect(self._on_goal_puzzle_complete)
+	puzzle_box.get_node("Player").player_sleeping.connect(self._on_player_player_sleeping)
 
 	#Shrink Cube
 	play_new_sound(cube_sounds[0])
@@ -194,6 +196,7 @@ func swap_puzzle(new_puzzle : PackedScene):
 
 	await transition_tween.finished
 	transitioning_level = false
+#	allow_input = true
 
 
 func play_new_sound(audio_stream : AudioStream):
@@ -219,10 +222,20 @@ func _on_goal_puzzle_complete():
 	puzzle_complete()
 
 
-func _on_hud_change_level(is_positive : bool):
-	increment_level_index(is_positive)
-	swap_puzzle(puzzles[current_level_index])
+func _on_player_player_sleeping():
+	allow_input = true
+
+
+func _on_hud_change_level(delta : int):
+	if !transitioning_level:
+		increment_level_index(delta)
+		swap_puzzle(puzzles[current_level_index])
 
 
 func _on_camera_camera_moved():
-	pause_game(false)
+	pass
+#	pause_game(false)
+
+func _on_puzzlebox_body_exited(body : Node3D):
+	if body.is_in_group("Player"):
+		puzzle_box.monitoring = false

@@ -3,15 +3,29 @@ extends Area3D
 
 signal puzzle_complete
 
+var player : RigidBody3D
+var is_complete : bool
+
 
 func _ready():
 	pass
 
 
 func _process(delta):
-	pass
-
-
-func _on_body_shape_entered(body_rid:RID, body:Node3D, body_shape_index:int, local_shape_index:int):
-	if body.is_in_group("Player"):
+	if player != null && player.sleeping && !is_complete:
 		emit_signal("puzzle_complete")
+		is_complete = true
+
+
+func _on_body_entered(body):
+	if body.is_in_group("Player"):
+		player = body
+
+
+func _on_body_exited(body):
+	if body.is_in_group("Player"):
+		player = null
+
+
+func _on_puzzle_complete():
+	player.get_child(0).mesh.material

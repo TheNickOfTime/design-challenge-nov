@@ -1,6 +1,6 @@
 extends Control
 
-signal change_level(is_positive : bool)
+signal change_level(delta : int)
 
 const fade_in_time : float = 0.25
 const fade_out_time : float = 0.5
@@ -13,10 +13,7 @@ const fade_out_time : float = 0.5
 @export var active_color : Color = Color.WHITE
 @export var inactive_color : Color = Color.DARK_GRAY
 
-var level_text_tween : Tween
-var complete_text_tween : Tween
-var button_left_tween : Tween
-var button_right_tween: Tween
+var ui_tween : Tween
 
 var level_dictionary = [
 	"one",
@@ -58,43 +55,29 @@ func enable_buttons(is_enabled : bool):
 
 
 func fade_buttons(is_visible : bool):
-	if level_text_tween != null && level_text_tween.is_running():
-		level_text_tween.kill()
-		complete_text_tween.kill()
-		button_left_tween.kill()
-		button_right_tween.kill()
+	if ui_tween != null && ui_tween.is_running():
+		ui_tween.kill()
 	
 	var color : Color = Color.WHITE if is_visible else Color.TRANSPARENT
 	var time : float = fade_in_time if is_visible else fade_out_time
 	
-	level_text_tween = get_tree().create_tween()
-	level_text_tween.tween_property(level_text, "modulate", color, time)
+	ui_tween = get_tree().create_tween()
+	ui_tween.tween_property(self, "modulate", color, time)
 	
-	complete_text_tween = get_tree().create_tween()
-	complete_text_tween.tween_property(complete_text, "modulate", color, time)
-	
-	button_left_tween = get_tree().create_tween()
-	button_left_tween.tween_property(button_left, "modulate", color, time)
-	
-	button_right_tween = get_tree().create_tween()
-	button_right_tween.tween_property(button_right, "modulate", color, time)
-	
-#	enable_buttons(false)
-	await level_text_tween.finished
+	await ui_tween.finished
 	enable_buttons(is_visible)
 
 
 func _on_button_select_right_button_up():
-	emit_signal("change_level", true)
-	pass
+	change_level.emit(1)
 
 
 func _on_button_select_left_button_up():
-	emit_signal("change_level", false)
-	pass
+	change_level.emit(-1)
 
 
-func _on_puzzle_box_manager_new_level(level_index : int):
+
+func _on_puzzle_box_manager_new_level(level_index : int, level_ref : Node):
 	var level_name : String
 	
 	if level_index == -1:
@@ -106,11 +89,16 @@ func _on_puzzle_box_manager_new_level(level_index : int):
 			$Level_Indicators.get_child(i).color = color
 	
 	level_text.text = "level " + level_name
+	complete_text.visible = false
+	
+	if(level_ref != null):
+		level_ref.get_node("Goal").puzzle_complete.connect(self._on_goal_puzzle_complete)
+		level_ref.body_exited.connect(self._on_puzzlebox_body_exited)
 
 
 func _on_camera_camera_moved():
-	await fade_buttons(false)
-	enable_buttons(false)
+	if !complete_text.visible:
+		await fade_buttons(false)
 
 
 func _on_puzzle_box_manager_pause(is_paused):
@@ -124,3 +112,19 @@ func _on_puzzle_box_manager_initialize_levels(count):
 		var new_indicator = indicator.duplicate()
 		new_indicator.color = inactive_color
 		$Level_Indicators.add_child(new_indicator)
+
+
+func _on_goal_puzzle_complete():
+	complete_text.visible = true
+	complete_text.text = "level complete!"
+	fade_buttons(true)
+#	level_text.text = "level complete!"
+
+
+func _on_puzzlebox_body_exited(body : Node3D):
+	if body.is_in_group("Player"):
+#		complete_text.visible = true
+		fade_buttons(true)
+		level_text.text = "respawning..."
+		await get_tree().create_timer(1.5).timeout
+		change_level.emit(0)
