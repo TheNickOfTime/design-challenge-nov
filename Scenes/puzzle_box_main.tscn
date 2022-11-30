@@ -1,34 +1,20 @@
-[gd_scene load_steps=24 format=3 uid="uid://pxlkk2ibbhjn"]
+[gd_scene load_steps=23 format=3 uid="uid://pxlkk2ibbhjn"]
 
-[ext_resource type="Material" uid="uid://d26unq8uckvjy" path="res://Shaders/space_skybox.tres" id="1_8s33p"]
 [ext_resource type="Script" path="res://Scripts/PuzzleBoxManager.gd" id="1_f23ct"]
+[ext_resource type="Environment" uid="uid://82pkj8xcmkbi" path="res://Scenes/default_environment.tres" id="1_vn4ad"]
 [ext_resource type="LabelSettings" uid="uid://djp8mmrg5wn8t" path="res://UI/label_title.tres" id="2_08hyc"]
 [ext_resource type="Script" path="res://Scripts/HUD.gd" id="2_ogw50"]
 [ext_resource type="SystemFont" uid="uid://clq0ndivqebeu" path="res://UI/default_font.tres" id="3_ux0cb"]
 [ext_resource type="PackedScene" uid="uid://eeyjhjgpr0vp" path="res://Prefabs/camera.tscn" id="6_axqi4"]
-[ext_resource type="PackedScene" uid="uid://ctn60273yv70f" path="res://Scenes/Puzzles/puzzle_box_template.tscn" id="7_1s8uu"]
+[ext_resource type="PackedScene" uid="uid://bmn7sigy1e62n" path="res://Scenes/Puzzles/level_01.tscn" id="6_whw5q"]
 [ext_resource type="AudioStream" uid="uid://bev55lvfp8uew" path="res://Audio/636628__eponn__melodic-rock-slide-fx-1.wav" id="7_6eoo4"]
+[ext_resource type="PackedScene" uid="uid://jymbeaxwh1tx" path="res://Scenes/Puzzles/level_02.tscn" id="7_jcm8p"]
 [ext_resource type="AudioStream" uid="uid://df8fm5jc5x2tc" path="res://Audio/636627__eponn__melodic-rock-slide-fx-2.wav" id="8_bu6rj"]
 [ext_resource type="AudioStream" uid="uid://boxsb0h4dvty1" path="res://Audio/636626__eponn__melodic-rock-slide-fx-3.wav" id="9_s0h6q"]
 [ext_resource type="AudioStream" uid="uid://bglvsoaquwhor" path="res://Audio/95000__j1987__cinderblockmove.wav" id="10_rku41"]
 [ext_resource type="AudioStream" uid="uid://d4jayb20kbpk3" path="res://Audio/95001__j1987__cinderblockmove2.wav" id="11_j255i"]
 [ext_resource type="AudioStream" uid="uid://c7abvfmi218w5" path="res://Audio/185849__lloydevans09__warping.wav" id="12_1q1qo"]
 [ext_resource type="AudioStream" uid="uid://nqvnor8u7yw" path="res://Audio/321723__rhodesmas__deep-space-vibrations-ambience-loop.ogg" id="13_gi0n4"]
-
-[sub_resource type="Sky" id="Sky_lihpv"]
-sky_material = ExtResource("1_8s33p")
-
-[sub_resource type="Environment" id="Environment_iay8a"]
-background_mode = 2
-background_color = Color(1, 1, 1, 1)
-background_energy_multiplier = 6.0
-sky = SubResource("Sky_lihpv")
-sky_custom_fov = 50.0
-tonemap_mode = 2
-ssao_enabled = true
-sdfgi_enabled = true
-sdfgi_use_occlusion = true
-fog_sky_affect = 0.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_n4xnl"]
 
@@ -49,7 +35,7 @@ emission = Color(1, 1, 1, 1)
 [node name="puzzle_box_test" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_iay8a")
+environment = ExtResource("1_vn4ad")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.866024, -0.433016, 0.250001, 0, 0.499998, 0.866026, -0.500003, 0.749999, -0.43301, 0, 0, 0)
@@ -70,6 +56,7 @@ inactive_color = Color(0.5, 0.5, 0.5, 1)
 
 [node name="Label_LevelText" type="Label" parent="UI/HUD"]
 custom_minimum_size = Vector2(400, 40)
+layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -86,6 +73,7 @@ vertical_alignment = 1
 
 [node name="Label_CompleteText" type="Label" parent="UI/HUD"]
 custom_minimum_size = Vector2(400, 40)
+layout_mode = 0
 offset_left = 440.0
 offset_top = 630.0
 offset_right = 840.0
@@ -98,6 +86,7 @@ vertical_alignment = 1
 
 [node name="Button_Left" type="Button" parent="UI/HUD"]
 custom_minimum_size = Vector2(40, 65)
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -124,6 +113,7 @@ icon_alignment = 1
 
 [node name="Button_Right" type="Button" parent="UI/HUD"]
 custom_minimum_size = Vector2(40, 65)
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -149,6 +139,7 @@ text = ">"
 icon_alignment = 1
 
 [node name="Level_Indicators" type="HBoxContainer" parent="UI/HUD"]
+layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_top = 75.0
@@ -160,13 +151,14 @@ alignment = 1
 
 [node name="Indicator" type="ColorRect" parent="UI/HUD/Level_Indicators"]
 custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
 offset_left = 635.0
 offset_right = 645.0
 offset_bottom = 10.0
 
 [node name="PuzzleBoxManager" type="Node3D" parent="."]
 script = ExtResource("1_f23ct")
-puzzles = [ExtResource("7_1s8uu"), ExtResource("7_1s8uu"), ExtResource("7_1s8uu")]
+puzzles = [ExtResource("6_whw5q"), ExtResource("7_jcm8p")]
 transition_sounds = [ExtResource("7_6eoo4"), ExtResource("8_bu6rj"), ExtResource("9_s0h6q")]
 rotate_sounds = [ExtResource("10_rku41"), ExtResource("11_j255i")]
 cube_sounds = [ExtResource("12_1q1qo")]

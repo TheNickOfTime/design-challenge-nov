@@ -1,0 +1,18 @@
+[gd_resource type="Environment" load_steps=3 format=3 uid="uid://82pkj8xcmkbi"]
+
+[ext_resource type="Material" uid="uid://d26unq8uckvjy" path="res://Shaders/space_skybox.tres" id="1_njnb1"]
+
+[sub_resource type="Sky" id="Sky_lihpv"]
+sky_material = ExtResource("1_njnb1")
+
+[resource]
+background_mode = 2
+background_color = Color(1, 1, 1, 1)
+background_energy_multiplier = 6.0
+sky = SubResource("Sky_lihpv")
+sky_custom_fov = 50.0
+tonemap_mode = 2
+ssao_enabled = true
+sdfgi_enabled = true
+glow_enabled = true
+fog_sky_affect = 0.0

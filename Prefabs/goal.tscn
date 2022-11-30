@@ -2,15 +2,15 @@
 
 [ext_resource type="Script" path="res://Scripts/Goal.gd" id="1_oo33w"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_3j8xg"]
-size = Vector3(0.1, 0.1, 0.1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yvsci"]
-transparency = 1
-cull_mode = 2
-albedo_color = Color(1, 0, 0, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jmeb0"]
+albedo_color = Color(0, 0.666667, 1, 0.392157)
 emission_enabled = true
-emission = Color(0.7, 0, 0, 1)
+emission = Color(0, 0.666667, 1, 1)
+emission_energy_multiplier = 16.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_3j8xg"]
+material = SubResource("StandardMaterial3D_jmeb0")
+size = Vector3(0.1, 0.1, 0.1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jffkm"]
 size = Vector3(0.1, 0.1, 0.1)
@@ -20,9 +20,10 @@ script = ExtResource("1_oo33w")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_3j8xg")
-surface_material_override/0 = SubResource("StandardMaterial3D_yvsci")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_jffkm")
 
-[connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
+[connection signal="puzzle_complete" from="." to="." method="_on_puzzle_complete"]
