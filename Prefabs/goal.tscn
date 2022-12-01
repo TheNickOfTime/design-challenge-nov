@@ -14,9 +14,9 @@ material = SubResource("StandardMaterial3D_jmeb0")
 size = Vector3(0.1, 0.1, 0.1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jffkm"]
-size = Vector3(0.1, 0.1, 0.1)
+size = Vector3(0.09, 0.09, 0.09)
 
-[node name="Goal" type="Area3D"]
+[node name="Goal" type="Area3D" groups=["Goal"]]
 script = ExtResource("1_oo33w")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -27,6 +27,14 @@ shape = SubResource("BoxShape3D_jffkm")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_u8dp6")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+light_color = Color(0, 0.666667, 1, 1)
+light_energy = 0.05
+light_indirect_energy = 0.05
+light_volumetric_fog_energy = 0.05
+light_size = 0.1
+light_specular = 0.05
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

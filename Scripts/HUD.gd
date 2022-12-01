@@ -20,7 +20,12 @@ var level_dictionary = [
 	"two",
 	"three",
 	"four",
-	"five"
+	"five",
+	"six",
+	"seven",
+	"eight",
+	"nine",
+	"ten"
 ]
 
 
@@ -29,29 +34,12 @@ func _ready():
 
 
 func _process(delta):
-#	print(!button_left.disabled)
 	pass
-
-
-func pulsate_text(element : Control):
-	var pulsate_tween_out = get_tree().create_tween()
-	pulsate_tween_out.tween_property(element, "scale", Vector2.ONE * 1.25, 0.5)
-
-	await pulsate_tween_out.finished
-#	print("wow")
-
-	var pulsate_tween_in = get_tree().create_tween()
-	pulsate_tween_in.tween_property(element, "scale", Vector2.ONE, 0.5)
-
-	await pulsate_tween_in.finished
-
-	pulsate_text(element)
 
 
 func enable_buttons(is_enabled : bool):
 	button_left.disabled = !is_enabled
 	button_right.disabled = !is_enabled
-#	print(is_enabled)
 
 
 func fade_buttons(is_visible : bool):
@@ -74,7 +62,6 @@ func _on_button_select_right_button_up():
 
 func _on_button_select_left_button_up():
 	change_level.emit(-1)
-
 
 
 func _on_puzzle_box_manager_new_level(level_index : int, level_ref : Node):
@@ -123,7 +110,6 @@ func _on_goal_puzzle_complete():
 
 func _on_puzzlebox_body_exited(body : Node3D):
 	if body.is_in_group("Player"):
-#		complete_text.visible = true
 		fade_buttons(true)
 		level_text.text = "respawning..."
 		await get_tree().create_timer(1.5).timeout

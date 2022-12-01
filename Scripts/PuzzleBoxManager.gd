@@ -72,12 +72,13 @@ func _input(event):
 			rotate_cube(new_rot)
 	
 	if event.is_action_pressed("pause"):
+		print(!is_paused)
 		pause_game(!is_paused)
 
 
 func pause_game(pause_state : bool):
 	is_paused = pause_state
-	emit_signal("pause", is_paused)
+	emit_signal("pause", pause_state)
 
 
 func rotate_cube(new_rotation : Transform3D):
@@ -142,13 +143,13 @@ func increment_level_index (delta : int):
 
 func swap_puzzle(new_puzzle : PackedScene):
 	if transitioning_level: return
-
+	
 	transitioning_level = true
 	allow_input = false
-
+	
 	var old_scene = puzzle_box
 	var new_scene = new_puzzle.instantiate()
-
+	
 	#Grow cube
 	play_new_sound(cube_sounds[0])
 	var transition_tween = get_tree().create_tween()
@@ -156,12 +157,13 @@ func swap_puzzle(new_puzzle : PackedScene):
 	transition_cube.scale = Vector3.ZERO
 	transition_cube.visible = true
 	await transition_tween.finished
-
+	
 	#Remove old level
 	if old_scene != null:
-		remove_child(old_scene)
+		old_scene.monitoring = false
+		old_scene.queue_free()
 		emit_signal("new_level", -1, null)
-
+	
 	#Rotate Cube
 	play_new_sound(transition_sounds[0])
 	transition_tween = get_tree().create_tween()
@@ -177,7 +179,7 @@ func swap_puzzle(new_puzzle : PackedScene):
 	transition_tween = get_tree().create_tween()
 	transition_tween.tween_property(transition_cube, 'rotation:y', transition_cube.rotation.y + deg_to_rad(180), 0.7)
 	await transition_tween.finished
-
+	
 	#Add new level
 	add_child(new_scene)
 	puzzle_box = new_scene
@@ -188,7 +190,7 @@ func swap_puzzle(new_puzzle : PackedScene):
 	puzzle_box.body_exited.connect(self._on_puzzlebox_body_exited)
 	puzzle_box.get_node("Goal").puzzle_complete.connect(self._on_goal_puzzle_complete)
 	puzzle_box.get_node("Player").player_sleeping.connect(self._on_player_player_sleeping)
-
+	
 	#Shrink Cube
 	play_new_sound(cube_sounds[0])
 	transition_tween = get_tree().create_tween()
@@ -196,7 +198,6 @@ func swap_puzzle(new_puzzle : PackedScene):
 
 	await transition_tween.finished
 	transitioning_level = false
-#	allow_input = true
 
 
 func play_new_sound(audio_stream : AudioStream):
@@ -233,8 +234,7 @@ func _on_hud_change_level(delta : int):
 
 
 func _on_camera_camera_moved():
-	pass
-#	pause_game(false)
+	pause_game(false)
 
 func _on_puzzlebox_body_exited(body : Node3D):
 	if body.is_in_group("Player"):

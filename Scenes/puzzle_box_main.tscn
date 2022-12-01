@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://pxlkk2ibbhjn"]
+[gd_scene load_steps=28 format=3 uid="uid://pxlkk2ibbhjn"]
 
 [ext_resource type="Script" path="res://Scripts/PuzzleBoxManager.gd" id="1_f23ct"]
 [ext_resource type="Environment" uid="uid://82pkj8xcmkbi" path="res://Scenes/default_environment.tres" id="1_vn4ad"]
@@ -9,11 +9,16 @@
 [ext_resource type="PackedScene" uid="uid://bmn7sigy1e62n" path="res://Scenes/Puzzles/level_01.tscn" id="6_whw5q"]
 [ext_resource type="AudioStream" uid="uid://bev55lvfp8uew" path="res://Audio/636628__eponn__melodic-rock-slide-fx-1.wav" id="7_6eoo4"]
 [ext_resource type="PackedScene" uid="uid://jymbeaxwh1tx" path="res://Scenes/Puzzles/level_02.tscn" id="7_jcm8p"]
+[ext_resource type="PackedScene" uid="uid://c2ugfu66hynvo" path="res://Scenes/Puzzles/level_03.tscn" id="8_1e7ca"]
 [ext_resource type="AudioStream" uid="uid://df8fm5jc5x2tc" path="res://Audio/636627__eponn__melodic-rock-slide-fx-2.wav" id="8_bu6rj"]
+[ext_resource type="PackedScene" uid="uid://dj6qy5dwcm5uu" path="res://Scenes/Puzzles/level_04.tscn" id="9_53nqw"]
 [ext_resource type="AudioStream" uid="uid://boxsb0h4dvty1" path="res://Audio/636626__eponn__melodic-rock-slide-fx-3.wav" id="9_s0h6q"]
+[ext_resource type="PackedScene" uid="uid://bfkq18eq7bbs0" path="res://Scenes/Puzzles/level_05.tscn" id="10_175tn"]
 [ext_resource type="AudioStream" uid="uid://bglvsoaquwhor" path="res://Audio/95000__j1987__cinderblockmove.wav" id="10_rku41"]
+[ext_resource type="PackedScene" uid="uid://yrgrdkcars2j" path="res://Scenes/Puzzles/level_06.tscn" id="11_6gecu"]
 [ext_resource type="AudioStream" uid="uid://d4jayb20kbpk3" path="res://Audio/95001__j1987__cinderblockmove2.wav" id="11_j255i"]
 [ext_resource type="AudioStream" uid="uid://c7abvfmi218w5" path="res://Audio/185849__lloydevans09__warping.wav" id="12_1q1qo"]
+[ext_resource type="PackedScene" uid="uid://cpjmrbyoyfoev" path="res://Scenes/Puzzles/level_07.tscn" id="12_2ssna"]
 [ext_resource type="AudioStream" uid="uid://nqvnor8u7yw" path="res://Audio/321723__rhodesmas__deep-space-vibrations-ambience-loop.ogg" id="13_gi0n4"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_n4xnl"]
@@ -56,6 +61,7 @@ inactive_color = Color(0.5, 0.5, 0.5, 1)
 
 [node name="Label_LevelText" type="Label" parent="UI/HUD"]
 custom_minimum_size = Vector2(400, 40)
+layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -72,6 +78,7 @@ vertical_alignment = 1
 
 [node name="Label_CompleteText" type="Label" parent="UI/HUD"]
 custom_minimum_size = Vector2(400, 40)
+layout_mode = 0
 offset_left = 440.0
 offset_top = 630.0
 offset_right = 840.0
@@ -84,6 +91,7 @@ vertical_alignment = 1
 
 [node name="Button_Left" type="Button" parent="UI/HUD"]
 custom_minimum_size = Vector2(40, 65)
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -110,6 +118,7 @@ icon_alignment = 1
 
 [node name="Button_Right" type="Button" parent="UI/HUD"]
 custom_minimum_size = Vector2(40, 65)
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -135,6 +144,7 @@ text = ">"
 icon_alignment = 1
 
 [node name="Level_Indicators" type="HBoxContainer" parent="UI/HUD"]
+layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_top = 75.0
@@ -146,13 +156,14 @@ alignment = 1
 
 [node name="Indicator" type="ColorRect" parent="UI/HUD/Level_Indicators"]
 custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
 offset_left = 635.0
 offset_right = 645.0
 offset_bottom = 10.0
 
 [node name="PuzzleBoxManager" type="Node3D" parent="."]
 script = ExtResource("1_f23ct")
-puzzles = [ExtResource("6_whw5q"), ExtResource("7_jcm8p")]
+puzzles = [ExtResource("6_whw5q"), ExtResource("7_jcm8p"), ExtResource("10_175tn"), ExtResource("8_1e7ca"), ExtResource("12_2ssna"), ExtResource("11_6gecu"), ExtResource("9_53nqw")]
 transition_sounds = [ExtResource("7_6eoo4"), ExtResource("8_bu6rj"), ExtResource("9_s0h6q")]
 rotate_sounds = [ExtResource("10_rku41"), ExtResource("11_j255i")]
 cube_sounds = [ExtResource("12_1q1qo")]

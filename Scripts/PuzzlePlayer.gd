@@ -28,8 +28,4 @@ func _on_sleeping_state_changed():
 		position = position.snapped(Vector3.ONE * 0.1)
 		player_sleeping.emit()
 		$AudioStreamPlayer.play()
-#		print_debug("snapped position")
-
-
-#func _on_body_entered(body):
-#	$AudioStreamPlayer.play()
+		print_debug("snapped position")
