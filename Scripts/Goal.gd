@@ -28,7 +28,7 @@ func _on_body_exited(body):
 
 
 func _on_puzzle_complete():
-	player.get_child(0).mesh.material = get_child(0).mesh.material
+	player.get_child(0).set_material_override(get_child(0).mesh.material)
 	var tween = get_tree().create_tween()
 	tween.tween_property(self, "scale", Vector3.ZERO, 0.5)
 	$AudioStreamPlayer.play()
